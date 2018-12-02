@@ -11,28 +11,36 @@ Student(s): Martyna Mikos, Edwin van der Vegt, Tahmina Begum, Casper Hogenboom, 
 <br> Semester: 2018-2019;
 
 <figure><img style="float: left; padding-right: 20px;"
-src="??" alt="Safety critical systems" width="458" height="300" />
-<figcaption>Fig 1. - Safety critical systems etc.
+src="./dropbox/2018_Mikos_img_5.JPG" alt="Safety critical systems" width="580" height="140" />
+<figcaption>Fig 1. - Safety critical systems
 </figcaption>
 </figure>
+<br>
 
 <h4>Problem statement and motivation:</h4>
-<p align=”justify”>In safety critical systems (SCS), it is of particular importance that the risk of errors is made negligible. Such systems are used in a broad area of applications, including medical devices, train- aircraft-control, weapon and nuclear systems. In general, all new technological applications will have some form of SCS built in. The level of risk differs in these applications: financial loss or even loss of life can be a result of a wrong assessment in SCS.
-In SCS the prior goal is to find an accurate solution in least computational time possible. This is an application where non-rigorous algorithms can be used to lower the computational cost. The non-rigorous algorithm should maintain high accuracy by validating the approximate solution. The context of this report is the verification of approximated solutions for non-rigorous optimization algorithms.
-Research problem: Can we validate a given approximation by proving the existence of a real solution 'nearby'?
+<p style="text-align: justify"> 
+
+	In safety critical systems (SCS), it is of particular importance that the risk of errors is made negligible. Such systems are used in a broad area of applications, including medical devices, railway brake system, aircraft-control, traffic lights, weapon and nuclear systems. In general, all new technological applications will have some form of SCS built in. The level of risk differs in these applications: financial loss or human life can be a result of a wrong assessment in SCS. The liability of such systems implies the importance of maintaining high quality by constant improvement. In SCS the prior goal is to find an accurate solution in least computational time possible. Existing rigorous algorithms are able to provide an exact solution, however they require a high computational cost. Therefore in order to decrease the time taken to generate the solution, non-rigorous algorithms are most often used. The non-rigorous algorithm should maintain high accuracy by validating the approximate solution and in the same time remain efficient in terms of the time taken to execute. 
+<br><br>
+	Therefore, we aim to develop an algorithm that verifies, whether an approximate solution is sufficiently close to the exact root (real solution), in order to take advantage of time efficiency of non-rigorous algorithms and the accuracy of rigorous methods. To accomplish this not only it is desirable to proof that the true solution is in the neighborhood of the approximation but also to obtain the interval that is small enough. To achieve the latter method called contracting will be used. This method allows to make bounds of an interval tighter, without changing the solution.
+
 </p>
 
-<figure><img style="text-align: center;" src="NM.jpg" alt="Newton Method" />
+<figure><img style="text-align: center;" src="./dropbox/2018_Mikos_img_3.JPG" alt="Newton Method" width="420" height="200" />
 <figcaption>Fig 2. - Newton Method.
 </figcaption>
 </figure>
 
-<figure><img style="text-align: center;" src="INM.jpg" alt="Interval Newton Method" />
-<figcaption>Fig 3. - Interval Newton Method. 
+<figure><img style="text-align: center;" src="./dropbox/2018_Mikos_img_4.png" alt="Bisection Method" width="280" height="300"  />
+<figcaption>Fig 3. - Bisection Method. 
 </figcaption>
 </figure>
 
-<h4>Research questions/hypotheses:</h4>
+<h4>Main research problem that will be examined is:</h4>
+<i>Can we validate a given approximation by proving the existence of a real solution 'nearby' ?</i>
+
+
+<h4>In the project we aimed at answering the following research questions:</h4>
 <ul>
 <li>How will we identify an initial estimator or initial box for the true solution?</li>
 <li>What is an appropriate notion of "nearby"?</li>
@@ -56,9 +64,10 @@ Research problem: Can we validate a given approximation by proving the existence
 Jaulin,  L.,  Kieffer,  M.,  Didrit,  O., &amp; Walter, E.  (2001). Applied interval analysis. Springer-Verlag London.
 
 <h4>Downloads:</h4>
-<a href="Project_group_14.pdf" target=”_blank”>Project plan</a>
-<br> <a href=”???” target=”_blank”>Final report</a>
+<br> <a href="https://www.dropbox.com/s/58ljerd9ek6nvcx/Project%20Plan.pdf?dl=0" target=”_blank”>Project plan</a>
+<br> <a href="https://www.dropbox.com/s/rey1lqbb5dn8qr6/Phase%201%20presentation.pptx?dl=0” target=”_blank">Presentation phase one </a>
 <br> <a href=”???” target=”_blank”>Final presentation</a>
+<br> <a href=”???” target=”_blank”>Final report</a>
 
 </body>
 </html>
