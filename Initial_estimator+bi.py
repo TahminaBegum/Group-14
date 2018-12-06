@@ -22,7 +22,7 @@ def function_for_execution(function_number,x):
 
 
 def Make_Interval(f,X_Input):
-    k=2
+    k=1.5
     ax_FDA=FloatDPApproximation(X_Input)
     bx_FDA=ax_FDA - k*(f(ax_FDA)/derivative(f,ax_FDA))
     ax_Float=float(str(ax_FDA))       #This part, I also confuse because It reduce a lots of data
