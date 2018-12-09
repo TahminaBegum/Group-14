@@ -6,8 +6,13 @@ def Intialization():
     print("3. (x-9)*(x*x-1)*(x+1)+1")
     print("4. (x-2)*(x-4)*(x-1)")
 
-
 def function_for_execution(function_number,x):
+    """Input:
+        function_number -- choice of function assigned to number,
+        x               -- function variable is x
+        Output:
+        f               -- function chosen with variable x"""
+    
     if function_number==1:
         f= x*x-2
     elif function_number==2:
@@ -22,6 +27,16 @@ def function_for_execution(function_number,x):
 
 
 def Make_Interval(f,X_Input):
+    """ Make an interval [ax, bx] from single input variable of function f.
+        First bound set ax = X_Input, bound bx by performing a single Newton Step (k=2): bx = ax - k*(f(ax)/f'(b)).
+        Depending on direction of Newton step, the bounds are set in the interval accordingly.
+        
+        Input:
+        f               -- function chosen with variable x
+        X_Input         -- initial approximation of root by user
+        Output:
+        X_end           -- interval [ax, bx] or [bx, ax]
+        """
     k=2
     ax_FDA=FloatDPApproximation(X_Input)
     bx_FDA=ax_FDA - k*(f(ax_FDA)/derivative(f,ax_FDA))
@@ -52,6 +67,15 @@ def Make_Interval3(X1,X1_new):
 
 
 def Newton_method_Approximation_step(f,ax,Ep,i):
+    """ Counting newton step's still the approximation is sufficiently close to root from single point ax (<= Epsilon)
+        Input:
+        f           -- function chosen with variable x
+        ax          -- input approximation
+        Ep          -- Epsilon (= .00001)
+        i           -- counter of newton step's
+        Output:
+        i           -- count of newton step's
+        """
     while True:
         i=i+1
         #print("ax:=",ax)
@@ -63,6 +87,15 @@ def Newton_method_Approximation_step(f,ax,Ep,i):
     return i
 
 def Newton_method_Approximation_step_bi(f,ax,bx,Ep,i):
+    """ Counting newton step's still the approximation is sufficiently close to root from both directions of the interval [ax,bx] (<= Epsilon)
+        Input:
+        f           -- function chosen with variable x
+        ax          -- input approximation
+        Ep          -- Epsilon (= .00001)
+        i           -- counter of newton step's
+        Output:
+        i           -- count of newton step's
+        """
     while True:
         i=i+1
         
@@ -82,6 +115,18 @@ def Newton_method_Approximation_step_bi(f,ax,bx,Ep,i):
 
 
 def Get_Estimator(f,X,i):
+    """ Initial interval is evaluted by its sign, function performs interval Newton method looking for  sign difference. If no sign difference is found, k (Newton step size) is doubled. Sign difference in an interval is proof of a root (intermediate value theorem).
+        Function is terminated as soon as sign difference is found (limited by k=50000)
+        
+        Input:
+        f               -- function chosen with variable x
+        X               -- inital interval
+        i               -- counter of newton steps performed
+        Output:
+        X_new           -- Interval with proof of root
+        i               -- counter of newton steps performed
+        
+        """
  
     fX=f(X)
     
@@ -105,7 +150,7 @@ def Get_Estimator(f,X,i):
         if not(Sign==Sign_new):
            return X_new,i
 
-    print("limit need to Increass")
+    print("limit need to Increase")
 
 
 
@@ -130,21 +175,26 @@ if __name__=='__main__':
     
     Input_X=float(input("Input a approximation to root: "))
     
+    """A is a single point taken from intialized interval around the input, lower bound"""
     A=Make_Interval(f,Input_X)
     
     # print("The Initial interval", A)
     #print("The type of X_in=",type(A))
+    """B is the upper bound of the interval with proof of a root"""
     counter=0
     B,step=Get_Estimator(f,A,counter)
     #r1=Get_Estimator1(f,A,i)
     print(" Root is in the range= ",A," and",B)
     
+    """Step counter from lower bound """
     step_E=Newton_method_Approximation_step(f,A,Ep,counter)
     print("The total steps in without initial estimator:= ",step_E)
 
+    """Step counter from upper bound """
     step_NM=Newton_method_Approximation_step(f,B,Ep,counter)
     print("The total steps in NM estimator:= ",step_NM+step)
-
+    
+    """Step counter from both directions """
     step_E_BI=Newton_method_Approximation_step_bi(f,A,B,Ep,counter)
     print("The total steps in with initial estimator with bi:= ",step_E_BI+step)
    
