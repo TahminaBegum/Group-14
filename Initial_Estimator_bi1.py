@@ -30,12 +30,13 @@ def Make_Interval(f,X_Input):
     """ Make an interval [ax, bx] from single input variable of function f.
         First bound set ax = X_Input, bound bx by performing a single Newton Step (k=2): bx = ax - k*(f(ax)/f'(b)).
         Depending on direction of Newton step, the bounds are set in the interval accordingly.
+        FloatDPApproximation is used to get an average value of the constructed interval, which is set as output
         
         Input:
         f               -- function chosen with variable x
         X_Input         -- initial approximation of root by user
         Output:
-        X_end           -- interval [ax, bx] or [bx, ax]
+        X_end           -- single value, average of interval [ax, bx] or [bx, ax]
         """
     k=2
     ax_FDA=FloatDPApproximation(X_Input)
@@ -115,15 +116,15 @@ def Newton_method_Approximation_step_bi(f,ax,bx,Ep,i):
 
 
 def Get_Estimator(f,X,i):
-    """ Initial interval is evaluted by its sign, function performs interval Newton method looking for  sign difference. If no sign difference is found, k (Newton step size) is doubled. Sign difference in an interval is proof of a root (intermediate value theorem).
+    """ Single point taken from initial interval is evaluted by its sign, function performs interval Newton method looking for sign difference. If no sign difference is found, k (Newton step size) is doubled. Sign difference is proof of a root (intermediate value theorem).
         Function is terminated as soon as sign difference is found (limited by k=50000)
         
         Input:
         f               -- function chosen with variable x
-        X               -- inital interval
+        X               -- single point taken from inital interval
         i               -- counter of newton steps performed
         Output:
-        X_new           -- Interval with proof of root
+        X_new           -- upperbound of interval with proof of root
         i               -- counter of newton steps performed
         
         """
@@ -158,6 +159,15 @@ def Get_Estimator(f,X,i):
 
 
 if __name__=='__main__':
+    """ The main function makes use of user iteraction to define function and first approximation of root.
+        A           -- average point of the interval made around the approximation input
+        B           -- point that has a sign difference with A
+        Interval [A,B] has therefor proof of an existing root.
+        step_E      -- step counter of newton steps evaluated from A
+        step_NM     -- step counter of newton steps evaluated from B
+        step_E_BI   -- step counter of newton steps from both directions
+        
+        """
     
     #initialization with Some functions
     Intialization()
@@ -175,26 +185,21 @@ if __name__=='__main__':
     
     Input_X=float(input("Input a approximation to root: "))
     
-    """A is a single point taken from intialized interval around the input, lower bound"""
     A=Make_Interval(f,Input_X)
     
     # print("The Initial interval", A)
     #print("The type of X_in=",type(A))
-    """B is the upper bound of the interval with proof of a root"""
     counter=0
     B,step=Get_Estimator(f,A,counter)
     #r1=Get_Estimator1(f,A,i)
     print(" Root is in the range= ",A," and",B)
     
-    """Step counter from lower bound """
     step_E=Newton_method_Approximation_step(f,A,Ep,counter)
     print("The total steps in without initial estimator:= ",step_E)
 
-    """Step counter from upper bound """
     step_NM=Newton_method_Approximation_step(f,B,Ep,counter)
     print("The total steps in NM estimator:= ",step_NM+step)
     
-    """Step counter from both directions """
     step_E_BI=Newton_method_Approximation_step_bi(f,A,B,Ep,counter)
     print("The total steps in with initial estimator with bi:= ",step_E_BI+step)
    
