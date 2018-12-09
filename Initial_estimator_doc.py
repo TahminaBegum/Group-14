@@ -74,7 +74,7 @@ def newton_method(f, x, Ep, step):
 
     """
 
-        Counting newton step's still the approximation is sufficiently close to true root from single point bnd1 (<= Epsilon)
+        Counting newton step's till the approximation is sufficiently close to true root from single point bnd1 (<= Epsilon)
         Input:
                 f           -- function chosen with variable x
                 x           -- input variable
@@ -107,7 +107,7 @@ def newton_method_bidirectional(f, bnd1, bnd2, Ep, step):
 
     """
 
-        Counting newton step's still the approximation is sufficiently close to root from both directions of the interval [bnd1,bnd2] (<= Epsilon)
+        Counting newton step's till the approximation is sufficiently close to root from both directions of the interval [bnd1,bnd2] (<= Epsilon)
         Input:
                 f               -- function chosen with variable x
                 bnd1 & bnd2     -- input variables
@@ -150,16 +150,12 @@ def initial_estimator(f, x,step):
 
         Single point taken as initial input (x) and then evaluate it,(f(x)).
         By the evaluation, we try to find the sign of the function at the input point,
-        The sign of input point is stored in the variable sign1. Calculate the h=f(x)/f'(x).
-        Now we try to find another point x_new in an iterative way.
-        To find the x_new we use a formula, x_new=x-k*h. where k is a special variable here.
-        Initially, k=2. Evaluate the x_new and set the sign as sign2.
-        If sign1 and sign2 are same then replace the value of x_new by x-k*h,
-        where the value of k is increased from 2 to 4.
-        The value of k is changed each and every iteration, each time its double then its previous value.
-        The iteration will break if sign1 and sign2 are not same.
-
-        In our implementation, we set the loop from 1 to 50000.
+        The sign of input point is stored in the variable sign1.
+        We try to find a point x_new, when evaluated (f(x_new) and sign stored in sign2) has a different sign compared to sign1.
+        x_new is calculated by x_new=x-k*h with h=f(x)/f'(x). Initially, k=2. If sign1 and sign2 are same then replace the value of x_new by x-k*h,
+        where the value of k is doubled.
+        The iteration will break if sign1 and sign2 are not same or max k is reached.
+        In our implementation, we set the loop for k from 1 to 50000.
 
         Input:
                 f               -- function chosen with variable x
