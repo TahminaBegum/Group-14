@@ -163,9 +163,9 @@ if __name__=='__main__':
         A           -- average point of the interval made around the approximation input
         B           -- point that has a sign difference with A
         Interval [A,B] has therefor proof of an existing root.
-        step_E      -- step counter of newton steps evaluated from A
-        step_NM     -- step counter of newton steps evaluated from B
-        step_E_BI   -- step counter of newton steps from both directions
+        step_E      -- step counter of without initial estimator from A
+        step_NM     -- step counter of Newton Method estimator evaluated from B
+        step_E_BI   -- step counter of Newton Method estimator from both directions
         
         """
     
