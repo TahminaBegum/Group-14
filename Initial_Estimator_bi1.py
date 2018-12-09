@@ -68,7 +68,7 @@ def Make_Interval3(X1,X1_new):
 
 
 def Newton_method_Approximation_step(f,ax,Ep,i):
-    """ Counting newton step's still the approximation is sufficiently close to root from single point ax (<= Epsilon)
+    """ Counting newton step's till the approximation is sufficiently close to root from single point ax (<= Epsilon)
         Input:
         f           -- function chosen with variable x
         ax          -- input approximation
@@ -88,7 +88,7 @@ def Newton_method_Approximation_step(f,ax,Ep,i):
     return i
 
 def Newton_method_Approximation_step_bi(f,ax,bx,Ep,i):
-    """ Counting newton step's still the approximation is sufficiently close to root from both directions of the interval [ax,bx] (<= Epsilon)
+    """ Counting newton step's till the approximation is sufficiently close to root from both directions of the interval [ax,bx] (<= Epsilon)
         Input:
         f           -- function chosen with variable x
         ax          -- input approximation
