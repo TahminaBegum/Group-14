@@ -67,11 +67,11 @@ def get_label(function_number):
 
 
 def make_interval(bnd1, bnd2):
-    
+
     """
         Make an interval [bnd1, bnd2] for the contractor method.
         Input:
-        bnd1 and bnd2               -- two saperate single values
+        bnd1 and bnd2               -- two separate single values
         
         Output:
         x          -- single value with interval [bnd1, bnd2] or [bnd2, bnd1]
@@ -123,7 +123,7 @@ def get_estimator_contractor(f, x, step, k1):
         x_new = x - k_step * h
         fr =f(make_interval(x, x_new))
         k_step = k_step * 2
-        if not (definitely((fr) >= 0) | definitely((fr) <= 0)):
+        if not (definitely((fr) >= 0) or definitely((fr) <= 0)):
             return x, x_new, step
 
     print("Limit need to Increass")
@@ -299,7 +299,11 @@ if __name__ == '__main__':
     
     """
         Input:
-        input_x                --The user define input x(can int or float)
+        function_number        -- User defines function
+        total_method           -- Total methods used
+        input_type_single      -- single input by user
+        input_r                -- Interval range
+        k                      -- value of k
         --------------------------------------------------------------------------------------------------------
         Ep                     --Epsilon is a smallest positive integer (type floatDPApproximation)
         f                      --User selected function
@@ -317,6 +321,10 @@ if __name__ == '__main__':
         Display the The total steps to find the solution of function with general Newton method.
         Display the The total steps to find the solution of function by using Newton method and initial estimator
         Display the The total steps to find the solution of function by using Newton method bidirectional and initial estimator
+        
+        
+        The program is a user interacting interface, so the user can input its own preferences. First the user is asked to choose a one dimensional function that the program will use to validate a root. Next the program will display the available methods for solving the rootfinding problem, and the user can choose how many it may use. After choosing a selection of the methods the program will ask for a single input or input range. A single input will initialize the program from this point, an interval will initialize for every integer value in the interval. When the user choose the interval option, the interval needs to be specified. Next, the value of k is asked to the user. The results are shown for the methods the user choose, number of iterations and root. Also for interval input, a plot will be made where the count of loop iterations is displayed.
+        
         """
     
     generel_nm = []
