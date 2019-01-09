@@ -114,14 +114,15 @@ def get_estimator_contractor(f, x, step, k1):
 
     h = fx /dfx
     k_step = k1
+    xp = x
     for j in range(1, 100):
         step = step + 1
         x_new = x - k_step * h
         fr =f(make_interval(x, x_new))
         k_step = k_step * 2
         if not (definitely((fr) >= 0) | definitely((fr) <= 0)):
-            return x, x_new, step
-
+            return xp, x_new, step
+    xp = x_new
     print("Limit need to Increass")
 
 
