@@ -90,42 +90,36 @@ def make_interval(bnd1, bnd2):
 
 
 
-def get_estimator_contractor(f, x, step, k1):
+def get_estimator_contractor(f, x_init, step, k1):
     
     """
-        Single point taken as initial input (x) and then evaluate it,(f(x)).
-        By the evaluation, we try to find the sign of the function at the input point,
-        The sign of input point is stored in the variable sign1.
-        We try to find a point x_new, when evaluated (f(x_new) and sign stored in sign2) has a different sign compared to sign1.
-        x_new is calculated by x_new=x-k*h with h=f(x)/f'(x). Initially, k is any integer. If sign1 and sign2 are same then replace the value of x_new by x-k*h,
-        where the value of k is doubled.
-        The iteration will break if sign1 and sign2 are not same or max k is reached.
-        In our implementation, we set the loop for k from 1 to 50000.
+        Contracting method is done by evalutating the sign of interval, the input x is the starting point of the newton step to x_new. The fr interval is constructed by [x, x_new], and the function is evaluated for all values in this interval. If the interval is strictly positive or strictly negative no root has been found, so the program will proceed to the next iteration from initial x with value of k doubled. The program will break if there is a sign difference found in the interval. The output is the contracted interval with proof of root. In our implementation, we set the loop for maximum 500 iterations.
+
         -------------------------------------------------------------------
         Input:
         f               -- function chosen with variable x
-        x               -- single point taken from inital input
+        x_init          -- single point taken from inital input
         step            -- counter of newton steps performed, initially step=0
-        k               ---k is a parameter, which helps to find the next bound quickly
+        k               -- k is a parameter, which helps to find the next bound quickly
         ----------------------------------------------------------------------
         Output:
-        x               -- initial input
+        x_prev          -- lowerbound of the interval
         x_new           -- upperbound of interval with proof of root
         step            -- total number of iteration need to find perfect x_new
-        
-        """
+                """
     
     
-    h = f(x) / derivative(f,x)
+    h = f(x_init) / derivative(f,x_init)
     k_step = k1
+    x_prev = x_init
     for j in range(1, 500):
         step = step + 1
-        x_new = x - k_step * h
-        fr =f(make_interval(x, x_new))
+        x_new = x_init - k_step * h
+        fr =f(make_interval(x_init, x_new))
         k_step = k_step * 2
         if not (definitely((fr) >= 0) or definitely((fr) <= 0)):
-            return x, x_new, step
-
+            return x_prev, x_new, step
+        x_prev = x_new
     print("Limit need to Increass")
 
 
@@ -134,13 +128,14 @@ def get_estimator_contractor(f, x, step, k1):
 def newton_method(f, x, Ep, step, rootdisplay):
     
     """
-        Counting newton step's till the approximation is sufficiently close to true root from single point bnd1 (<= Epsilon)
+        The newton method is used for finding the exact root from the interval constructed by previous defined estimator program (contractor, sign). The newton method will iterate in this interval until it is sufficiently close to the true root from single bound of interval. This is achieved when f(x)/f'(x) is smaller or equal to epsilon. The step to achieve this are counted and outputed, to be added to the steps counted in the estimator program.
         Input:
         f           -- function chosen with variable x
         x           -- input variable
         Ep          -- Epsilon (= .00001)
         step        -- counter of newton step's, initially step=0
         rootdisplay -- if we want to see the true root
+        
         Output:
         step        -- return  the total number of newton step's are required to reach to closer to true root
         """
