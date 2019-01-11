@@ -1,7 +1,3 @@
-#
-#-----------
-#
-
 import matplotlib.pyplot as plt
 from ariadne import *
 
@@ -24,10 +20,11 @@ def intialization_method():
     print("2. General Newton Method with Initial estimator by using sign")
     print("3. General Newton Method with Initial estimator by using contractor")
     print("4. General Newton Method with Initial estimator by using sign method and second derivatives")
-    print("5. General Newton Method with Initial estimator by using contractor method and second derivatives")
+    print("5. General Newton Method with Initial estimator by using contractor method and second derivatives"")
 
 
 def select_function(function_number, x):
+    
     
     """
         Input:
@@ -36,7 +33,9 @@ def select_function(function_number, x):
         Output:
         f               -- function chosen with variable x
         """
-
+    
+    
+    
     if function_number == 1:
         f = x * x - 2
     elif function_number == 2:
@@ -47,6 +46,9 @@ def select_function(function_number, x):
         f = (x - 2) * (x - 4) * (x - 1) + 7
     
     return f
+
+
+
 
 def get_label(function_number):
     
@@ -61,12 +63,16 @@ def get_label(function_number):
     else:
         return "(x-2)*(x-4)*(x-1)+7"
 
+
+
+
 def make_interval(bnd1, bnd2):
     
     """
         Make an interval [bnd1, bnd2] for the contractor method.
         Input:
-        bnd1 and bnd2               -- two separate single values
+        bnd1 and bnd2               -- two saperate single values
+        
         Output:
         x          -- single value with interval [bnd1, bnd2] or [bnd2, bnd1]
         """
@@ -81,79 +87,71 @@ def make_interval(bnd1, bnd2):
     x = cast_singleton(ix)
     return x
 
+
+
+
 def get_estimator_contractor(f, x, step, k1):
     
     """
-        Contracting method is done by evalutating the sign of interval,
-        the input x is the starting point of the newton step to x_new.
-        The fr interval is constructed by [x, x_new], and the function is
-        evaluated for all values in this interval. If the interval is strictly
-        positive or strictly negative no root has been found, so the program will
-        proceed to the next iteration from initial x with value of k doubled.
-        The program will break if there is a sign difference found in the interval.
-        The output is the contracted interval with proof of root. In our implementation,
-        we set the loop for maximum 500 iterations.
+        Single point taken as initial input (x) and then evaluate it,(f(x)).
+        By the evaluation, we try to find the sign of the function at the input point,
+        The sign of input point is stored in the variable sign1.
+        We try to find a point x_new, when evaluated (f(x_new) and sign stored in sign2) has a different sign compared to sign1.
+        x_new is calculated by x_new=x-k*h with h=f(x)/f'(x). Initially, k is any integer. If sign1 and sign2 are same then replace the value of x_new by x-k*h,
+        where the value of k is doubled.
+        The iteration will break if sign1 and sign2 are not same or max k is reached.
+        In our implementation, we set the loop for k from 1 to 50000.
         -------------------------------------------------------------------
         Input:
         f               -- function chosen with variable x
-        x_init          -- single point taken from inital input
+        x               -- single point taken from inital input
         step            -- counter of newton steps performed, initially step=0
-        k               -- k is a parameter, which helps to find the next bound quickly
+        k               ---k is a parameter, which helps to find the next bound quickly
         ----------------------------------------------------------------------
         Output:
-        x_prev          -- lowerbound of the interval
+        x               -- initial input
         x_new           -- upperbound of interval with proof of root
         step            -- total number of iteration need to find perfect x_new
+        
         """
-    fx=f(x)
-    dfx=derivative(f,x)
     
-    if decide(dfx==0):
-        print("Zero derivative. No solution found in IE contractor.For x=",x)
-        return x,x,0
-
-    h = fx /dfx
+    
+    h = f(x) / derivative(f,x)
     k_step = k1
-    xp = x
-    for j in range(1, 100):
+    for j in range(1, 500):
         step = step + 1
         x_new = x - k_step * h
         fr =f(make_interval(x, x_new))
         k_step = k_step * 2
         if not (definitely((fr) >= 0) | definitely((fr) <= 0)):
-            return xp, x_new, step
-    xp = x_new
+            return x, x_new, step
+
     print("Limit need to Increass")
+
 
 
 
 def newton_method(f, x, Ep, step, rootdisplay):
     
     """
-        The newton method is used for finding the exact root from the interval
-        constructed by previous defined estimator program (contractor, sign).
-        The newton method will iterate in this interval until it is sufficiently
-        close to the true root from single bound of interval. This is achieved
-        when f(x)/f'(x) is smaller or equal to epsilon. The step to achieve this
-        are counted and outputed, to be added to the steps counted in the estimator program.
+        Counting newton step's till the approximation is sufficiently close to true root from single point bnd1 (<= Epsilon)
         Input:
         f           -- function chosen with variable x
         x           -- input variable
-        Ep          -- Epsilon (= .00001)
+        Ep          -- Epsilon (= .00000001)???
         step        -- counter of newton step's, initially step=0
         rootdisplay -- if we want to see the true root
         Output:
         step        -- return  the total number of newton step's are required to reach to closer to true root
         """
     
-    
     while True:
         step = step + 1
         fx=f(x)
         dfx= derivative(f, x)
         if decide(dfx==0):
-            print("Zero derivative. No solution found in NM.For x=",x)
-            return x,x,0
+            print("Zero derivative. No solution found.")
+            return 0
         h = fx / dfx
         x = x - h
         if (decide(abs(h) <= Ep)):
@@ -163,63 +161,78 @@ def newton_method(f, x, Ep, step, rootdisplay):
     return step
 
 
+
+
+
+
 def get_estimator_sign_second(f, x, step,k):
+    
+    """
+      underconstruction
+        """
     
     fx = f(x)
     sign1 = decide(fx > 0) and 1 or -1
     k_step = k
     deg=2
     dfx=differential(f,x,deg)
-    if decide(dfx[(2,)]==0):
-        print("Zero derivative. No solution found in IE(second derivative)sign method.For x=",x)
-        return x,x,0
-    h = FloatDPApproximation(dfx[(1,)])/ (2*FloatDPApproximation(dfx[(2,)]))
-    #h = fx/ (2*FloatDPApproximation(dfx[(2,)]))
-    #print("x fx dfx h ",x,fx,dfx[(2,)], h)
+    #print(dfx,type(dfx));
+    #print("f''(x):", dfx[(2,)])
+    #h = fx / derivative(f, x)
+    h = fx/ 2*FloatDPApproximation(dfx[(2,)])
+    print("The value of dfx in second order = ",dfx)
     xp=x
     for j in range(1,100):
-        #print("j",j)
         step = step + 1
         x_new = x - k_step * h
         k_step = k_step * 2         # make the k double in each iteration
+        print("The k step = ",k_step," j= ",j)
+        print("xp h = ",xp,h)
         fx_new = f(x_new)
         sign2 = decide(fx_new > 0) and 1 or -1
+        print(" sign1 = ",sign1," sign2 = ",sign2," x new = ",x_new)
         if not (sign1 == sign2):
+            #x_new=(xp+x_new)/2
+            # x=f(x_new)/(f(xp)+f(x_new))
+            # if x_new<xp :
+            #     x_new=x_new+x
+            # else:
+            #    x_new=x_new-x
             return xp,x_new, step
         else:
             xp=x_new
-#print("j sign1 sign2",j,sign1,sign2)
-
     print("limit need to Increase")
 
-
-
-def get_estimator_sign_second_con(f,x, step,k):
-    
+def get_estimator_sign_second_con(f, x, step,k):
+          
+          """
+              underconstruction
+              """
+          
     fx = f(x)
     sign1 = decide(fx > 0) and 1 or -1
     k_step = k
     deg=2
     dfx=differential(f,x,deg)
-    if decide(dfx[(2,)]==0):
-        print("Zero derivative. No solution found in IE(second derivative)contractor method.For x=",x)
-        return x,x,0
-    
-    h = FloatDPApproximation(dfx[(2,)]) / (2*FloatDPApproximation(dfx[(2,)]))
-    #h = fx/ (2*FloatDPApproximation(dfx[(2,)]))
-    
+          #print(dfx,type(dfx));
+          #print("f''(x):", dfx[(2,)])
+          #h = fx / derivative(f, x)
+    h = fx/ 2*FloatDPApproximation(dfx[(2,)])
+    print("The value of dfx in second order = ",dfx)
     xp=x
     for j in range(1,100):
         step = step + 1
         x_new = x - k_step * h
         k_step = k_step * 2         # make the k double in each iteration
-        fx_new = f(make_interval(x, x_new))
+        print("The k step = ",k_step," j= ",j)
+        print("xp h = ",xp,h)
+        fx_new = f(x_new)
         sign2 = decide(fx_new > 0) and 1 or -1
+        print(" sign1 = ",sign1," sign2 = ",sign2," x new = ",x_new)
         if not (sign1 == sign2):
           return xp,x_new, step
         else:
           xp=x_new
-#print("xp xnew",xp,x_new)
           
     print("limit need to Increase")
 
@@ -236,13 +249,17 @@ def get_estimator_sign(f, x, step,k):
         where the value of k is doubled.
         The iteration will break if sign1 and sign2 are not same or max k is reached.
         In our implementation, we set the loop for k from 1 to 50000.
+        
         ------------------------------------------------------------------
+        
         Input:
         f               -- function chosen with variable x
         x               -- single point taken from inital input
         step            -- counter of newton steps performed, initially step=0
         k               ---k is a parameter, which helps to find the next bound quickly
+        
         ----------------------------------------------------------------------
+        
         Output:
         x               -- the initial input
         x_new           -- upperbound of interval with proof of root
@@ -254,16 +271,19 @@ def get_estimator_sign(f, x, step,k):
     k_step = k
     dfx=derivative(f, x)
     if decide(dfx==0):
-        print("Zero derivative. No solution found in IE sign method.For x=",x)
-        return x,x,0
+        print("Zero derivative. No solution found in initial estimator sign method.")
+        return get_estimator_sign(f, x+1, 0, k)
     h = fx /dfx
     xp=x
     for j in range(1, 100):
         step = step + 1
         x_new = x - k_step * h
         k_step = k_step * 2         # make the k double in each iteration
+        print("The k step = ",k_step,"j=",j)
+        print("xp h=",xp,h)
         fx_new = f(x_new)
         sign2 = decide(fx_new > 0) and 1 or -1
+        print("sign1 = ",sign1,"sign2 = ",sign2,"x new = ",x_new)
         if not (sign1 == sign2):
             return xp,x_new, step
         else:
@@ -273,7 +293,7 @@ def get_estimator_sign(f, x, step,k):
 
 
 def askbool(message):
-
+    
     # check bool type of question
     
     a = input(message)
@@ -284,14 +304,10 @@ def askbool(message):
 
 
 if __name__ == '__main__':
-
+    
     """
         Input:
-        function_number        -- User defines function
-        total_method           -- Total methods used
-        input_type_single      -- single input by user
-        input_r                -- Interval range
-        k                      -- value of k
+        input_x                --The user define input x(can int or float)
         --------------------------------------------------------------------------------------------------------
         Ep                     --Epsilon is a smallest positive integer (type floatDPApproximation)
         f                      --User selected function
@@ -309,16 +325,7 @@ if __name__ == '__main__':
         Display the The total steps to find the solution of function with general Newton method.
         Display the The total steps to find the solution of function by using Newton method and initial estimator
         Display the The total steps to find the solution of function by using Newton method bidirectional and initial estimator
-        The program is a user interacting interface, so the user can input its own preferences.
-        First the user is asked to choose a one dimensional function that the program will use to validate a root.
-        Next the program will display the available methods for solving the rootfinding problem, and the user can
-        choose how many it may use. After choosing a selection of the methods the program will ask for a single input
-        or input range. A single input will initialize the program from this point, an interval will initialize for
-        every integer value in the interval. When the user choose the interval option, the interval needs to be specified.
-        Next, the value of k is asked to the user. The results are shown for the methods the user choose,
-        number of iterations and root. Also for interval input, a plot will be made where the count of loop iterations is displayed.
         """
-    
     
     generel_nm = []
     input_range = []
@@ -348,7 +355,6 @@ if __name__ == '__main__':
     f = select_function(function_number, x)
     print("Function: ", f)
     
-
     intialization_method()
     
     total_method = int(input("How many method you want to use (1 to 5)?:"))
@@ -362,7 +368,7 @@ if __name__ == '__main__':
         input_r= int(input("Input range of the approximation root X (-X,+X): "))
         k = float(input("The value of k:"))
         interval = 1
-        for a in range(-input_r, input_r+1):
+        for a in range(-input_r, input_r):
             input_x = interval * a
             input_range.append(input_x)
             x = FloatDPApproximation(input_x)
@@ -377,35 +383,23 @@ if __name__ == '__main__':
                 for j in range(len(all_method)):
                     if all_method[j] == 2:
                         bound1, bound2, step = get_estimator_sign(f, x, counter, k)
-                        if not(bound1==bound2):
-                            step_nm = newton_method(f, bound2, Ep, counter, rootdisplay)
-                        else:
-                            step_nm = 0
+                        step_nm = newton_method(f, bound2, Ep, counter, rootdisplay)
                         initialestimator_nm.append(step + step_nm)
                 for j in range(len(all_method)):
                     if all_method[j] == 3:
                         bound1_con, bound2_con, step_con = get_estimator_contractor(f, x, counter, k)
-                        if not(bound1_con==bound2_con):
-                            step_nm_con = newton_method(f, bound2_con, Ep, counter, rootdisplay)
-                        else:
-                            step_nm_con = 0
+                        step_nm_con = newton_method(f, bound2_con, Ep, counter, rootdisplay)
                         initialestimator_nm_con.append(step_con + step_nm_con)
                 for j in range(len(all_method)):
                     if all_method[j] == 4:
                         bound1_second, bound2_second, step_second= get_estimator_sign_second(f, x, counter, k)
-                        if not(bound1_second==bound2_second):
-                            step_ge_sign_second= newton_method(f,bound2_second, Ep, counter, rootdisplay)
-                        else:
-                            step_ge_sign_second=0
-                        second_nm.append(step_second+step_ge_sign_second)
+                        step_ge_sign_second= newton_method(f,bound2_second, Ep, counter, rootdisplay)
+                        second_nm.append(step+step_ge_sign_second)
                 for j in range(len(all_method)):
                     if all_method[j] == 5:
                         bound1_second_con, bound2_second_con, step_second_con= get_estimator_sign_second_con(f, x, counter, k)
-                        if not(bound1_second_con==bound2_second_con):
-                            step_ge_second_con = newton_method(f,bound2_second_con, Ep, counter, rootdisplay)
-                        else:
-                            step_ge_second_con = 0
-                        second_nm_con.append(step_second_con+step_ge_second_con)
+                        step_ge_second_con = newton_method(f,bound2_second_con, Ep, counter, rootdisplay)
+                        second_nm_con.append(step_con+step_ge_second_con)
 
         titlelabels = "Function: {}  k={}".format(get_label(function_number), k)
         plt.title(titlelabels)
@@ -432,6 +426,10 @@ if __name__ == '__main__':
         counter = 0
         rootdisplay = 1
         if not (decide(f(x) == 0)):
+          #bound1, bound2, step = get_estimator_sign(f, x, counter, k)
+          #bound1_second, bound2_second, step_second= get_estimator_sign_second(f, x, counter, k)
+          #bound1_con, bound2_con, step_con = get_estimator_contractor(f, x, counter, k)
+            
             for j in range(len(all_method)):
                 if all_method[j] == 1:
                     step_general_nm = newton_method(f, x, Ep, counter, rootdisplay)
@@ -439,27 +437,23 @@ if __name__ == '__main__':
             for j in range(len(all_method)):
                 if all_method[j] == 2:
                     bound1, bound2, step = get_estimator_sign(f, x, counter, k)
-                    print("b1 b2",bound1, bound2)
-                    if not(decide(bound1==bound2)):
-                        print("b1 b2 i",bound1, bound2)
-                        step_nm = newton_method(f, bound2, Ep, counter, rootdisplay)
-                        print("The total steps in with initial estimator sign method(", bound2, "):= ", step_nm + step)
+                    step_nm = newton_method(f, bound2, Ep, counter, rootdisplay)
+                    print("The total steps in with initial estimator sign method(", bound2, "):= ", step_nm + step)
             for j in range(len(all_method)):
                 if all_method[j] == 3:
                     bound1_con, bound2_con, step_con = get_estimator_contractor(f, x, counter, k)
-                    if not(decide(bound1_con==bound2_con)):
-                        step_nm_con = newton_method(f, bound2_con, Ep, counter, rootdisplay)
-                        print("The total steps in with initial estimator contractor method(", bound2_con, "):= ",step_nm_con + step_con)
+                    step_nm_con = newton_method(f, bound2_con, Ep, counter, rootdisplay)
+                    print("The total steps in with initial estimator contractor method(", bound2_con, "):= ",
+                          step_nm_con + step_con)
             for j in range(len(all_method)):
                 if all_method[j] == 4:
                     bound1_second, bound2_second, step_second= get_estimator_sign_second(f, x, counter, k)
-                    if not(decide(bound1_second==bound2_second)):
-                        step_ge_sign_second= newton_method(f,bound2_second, Ep, counter, rootdisplay)
-                        print("The total steps in with initial estimator sign method(second derivatives)(", bound2_second, "):= ",step_ge_sign_second + step_second)
+                    step_ge_sign_second= newton_method(f,bound2_second, Ep, counter, rootdisplay)
+                    print("The total steps in with initial estimator sign method(second derivatives)(", bound2_second, "):= ",
+                              step_ge_sign_second + step)
             for j in range(len(all_method)):
                 if all_method[j] == 5:
                     bound1_second_con, bound2_second_con, step_second_con= get_estimator_sign_second_con(f, x, counter, k)
-                    if not(decide(bound1_second_con==bound2_second_con)):
-                        step_ge_second_con = newton_method(f,bound2_second_con, Ep, counter, rootdisplay)
-                        print("The total steps in contractor with initial estimator contractor method(second derivatives)(",bound2_second_con, "):= ",
-                          step_ge_second_con + step_second_con)
+                    step_ge_second_con = newton_method(f,bound2_second_con, Ep, counter, rootdisplay)
+                    print("The total steps in contractor with initial estimator contractor method(second derivatives)(",bound2_second_con, "):= ",
+                          step_ge_second_con + step_con)
