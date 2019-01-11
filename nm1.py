@@ -20,7 +20,7 @@ def intialization_method():
     print("2. General Newton Method with Initial estimator by using sign")
     print("3. General Newton Method with Initial estimator by using contractor")
     print("4. General Newton Method with Initial estimator by using sign method and second derivatives")
-    print("5. General Newton Method with Initial estimator by using contractor method and second derivatives"")
+    print("5. General Newton Method with Initial estimator by using contractor method and second derivatives")
 
 
 def select_function(function_number, x):
@@ -204,11 +204,6 @@ def get_estimator_sign_second(f, x, step,k):
     print("limit need to Increase")
 
 def get_estimator_sign_second_con(f, x, step,k):
-          
-          """
-              underconstruction
-              """
-          
     fx = f(x)
     sign1 = decide(fx > 0) and 1 or -1
     k_step = k
