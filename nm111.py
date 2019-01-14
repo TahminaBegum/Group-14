@@ -13,7 +13,9 @@ import time
 def print_function():
     
     # Print all the function in the screen
- 
+    #a=np.random.rand(1,9)
+    #print("a",a)
+
     print("1. x*x-2")
     print("2. x*x*x-2")
     print("3. (x-9)*(x*x-1)*(x+1)+6")
@@ -47,6 +49,8 @@ def select_function(function_number, x):
         f = x * x * x - 2
     elif function_number == 3:
         f = (x - 9) * (x * x - 1) * (x + 1) + 6
+        #f=x*x*x+5
+    #f=x*x*x+3
     else:
         f = (x - 2) * (x - 4) * (x - 1) + 7
     
@@ -367,17 +371,29 @@ if __name__ == '__main__':
     all_method = []
     t_start=0
     t_end=0
+    k_list=[]
     generel_nm_time = []
     initialestimator_nm_time = []
     initialestimator_nm_con_time = []
     second_nm_time = []
     second_nm_con_time = []
+    mean_step_ge=[]
+    mean_step_ie=[]
+    mean_step_ie_con=[]
+    mean_step_ie_second=[]
+    mean_step_ie_second_con=[]
+    mean_step_ge_time=[]
+    mean_step_ie_time=[]
+    mean_step_ie_con_time=[]
+    mean_step_ie_second_time=[]
+    mean_step_ie_second_con_time=[]
     
-   
+    #temp=FloatDPBounds(Decimal(1.2),DoublePrecision())
+    #print("temp ",temp.upper()-temp.lower())
     # To get the value of Epsilon
-    pr = DoublePrecision()
-    epp=FloatDP.eps(pr)
-    print("ep",epp)
+    #pr = DoublePrecision()
+    #epp=FloatDP.eps(pr)
+    #print("ep",epp)
     e = UpperInterval({cast_exact(.00000001): 0})
     Ep = FloatDPApproximation(cast_singleton(e))
     
@@ -407,145 +423,122 @@ if __name__ == '__main__':
 
     if not (input_type_single):
         input_r= int(input("Input range of the approximation root X (-X,+X): "))
-        k = float(input("The value of k:"))
-        interval = 1
-       
-        for a in range(-input_r, input_r+1):
-            input_x = interval * a
-            input_range.append(input_x)
-            x = FloatDPApproximation(input_x)
-            counter = 0
-            rootdisplay = 0
+        #k = float(input("The value of k:"))
+        kr=0
+        for k1 in range(kr, kr+5):
+            k=k1+0.5
+            k_list.append(k)
+            interval = 1
+            for a in range(-input_r, input_r+1):
+                input_x = interval * a
+                input_range.append(input_x)
+                x = FloatDPApproximation(input_x)
+                counter = 0
+                rootdisplay = 0
             
-            if not (decide(f(x) == 0)):
-                for j in range(len(all_method)):
-                    if all_method[j] == 1:
-                        t_start=time.process_time()
-                        step_general_nm = newton_method(f, x, Ep, counter, rootdisplay)
-                        t_end=time.process_time()
-                        if step_general_nm==0:
-                            generel_nm_time.append(0)
-                        else:
-                            generel_nm_time.append(t_end-t_start)
-                        generel_nm.append(step_general_nm)
-                for j in range(len(all_method)):
-                    if all_method[j] == 2:
-                        t_start=time.process_time()
-                        bound1, bound2, step = get_estimator_sign(f, x, counter, k)
-                        if not decide(bound1==bound2):
-                            step_nm = newton_method(f, bound1, Ep, counter, rootdisplay)
+                if not (decide(f(x) == 0)):
+                    for j in range(len(all_method)):
+                        if all_method[j] == 1:
+                            t_start=time.process_time()
+                            step_general_nm = newton_method(f, x, Ep, counter, rootdisplay)
                             t_end=time.process_time()
-                            initialestimator_nm_time.append(t_end-t_start)
-                            initialestimator_nm.append(step + step_nm)
-                        else:
-                            initialestimator_nm_time.append(0)
-                            initialestimator_nm.append(0)
-                for j in range(len(all_method)):
-                    if all_method[j] == 3:
-                        t_start=time.process_time()
-                        bound1_con, bound2_con, step_con = get_estimator_contractor(f, x, counter, k)
-                        if not decide(bound1_con==bound2_con):
-                            step_nm_con = newton_method(f, bound2_con, Ep, counter, rootdisplay)
-                            t_end=time.process_time()
-                            initialestimator_nm_con_time.append(t_end-t_start)
-                            initialestimator_nm_con.append(step_con + step_nm_con)
-                        else:
-                            initialestimator_nm_con_time.append(0)
-                            initialestimator_nm_con.append(0)
-                for j in range(len(all_method)):
-                    if all_method[j] == 4:
-                        t_start=time.process_time()
-                        bound1_second, bound2_second, step_second= get_estimator_sign_second(f, x, counter, k)
-                        if not decide(bound1_second==bound2_second):
-                            step_ge_sign_second= newton_method(f,bound2_second, Ep, counter, rootdisplay)
-                            t_end=time.process_time()
-                            second_nm_time.append(t_end-t_start)
-                            second_nm.append(step_second+step_ge_sign_second)
-                        else:
-                            second_nm_time.append(0)
-                            second_nm.append(0)
-                for j in range(len(all_method)):
-                    if all_method[j] == 5:
-                        t_start=time.process_time()
-                        bound1_second_con, bound2_second_con, step_second_con= get_estimator_sign_second_con(f, x, counter, k)
-                        if not decide(bound1_second_con==bound2_second_con):
-                            step_ge_second_con = newton_method(f,bound2_second_con, Ep, counter, rootdisplay)
-                            t_end=time.process_time()
-                            second_nm_con_time.append(t_end-t_start)
-                            second_nm_con.append(step_second_con+step_ge_second_con)
-                        else:
-                            second_nm_con_time.append(0)
-                            second_nm_con.append(0)
+                            if step_general_nm==0:
+                                generel_nm_time.append(0)
+                            else:
+                                generel_nm_time.append(t_end-t_start)
+                                generel_nm.append(step_general_nm)
+                    for j in range(len(all_method)):
+                        if all_method[j] == 2:
+                            t_start=time.process_time()
+                            bound1, bound2, step = get_estimator_sign(f, x, counter, k)
+                            if not decide(bound1==bound2):
+                                step_nm = newton_method(f, bound1, Ep, counter, rootdisplay)
+                                t_end=time.process_time()
+                                initialestimator_nm_time.append(t_end-t_start)
+                                initialestimator_nm.append(step + step_nm)
+                            else:
+                                initialestimator_nm_time.append(0)
+                                initialestimator_nm.append(0)
+                    for j in range(len(all_method)):
+                        if all_method[j] == 3:
+                            t_start=time.process_time()
+                            bound1_con, bound2_con, step_con = get_estimator_contractor(f, x, counter, k)
+                            if not decide(bound1_con==bound2_con):
+                                step_nm_con = newton_method(f, bound2_con, Ep, counter, rootdisplay)
+                                t_end=time.process_time()
+                                initialestimator_nm_con_time.append(t_end-t_start)
+                                initialestimator_nm_con.append(step_con + step_nm_con)
+                            else:
+                                initialestimator_nm_con_time.append(0)
+                                initialestimator_nm_con.append(0)
+                    for j in range(len(all_method)):
+                        if all_method[j] == 4:
+                            t_start=time.process_time()
+                            bound1_second, bound2_second, step_second= get_estimator_sign_second(f, x, counter, k)
+                            if not decide(bound1_second==bound2_second):
+                                step_ge_sign_second= newton_method(f,bound2_second, Ep, counter, rootdisplay)
+                                t_end=time.process_time()
+                                second_nm_time.append(t_end-t_start)
+                                second_nm.append(step_second+step_ge_sign_second)
+                            else:
+                                second_nm_time.append(0)
+                                second_nm.append(0)
+                    for j in range(len(all_method)):
+                        if all_method[j] == 5:
+                            t_start=time.process_time()
+                            bound1_second_con, bound2_second_con, step_second_con= get_estimator_sign_second_con(f, x, counter, k)
+                            if not decide(bound1_second_con==bound2_second_con):
+                                step_ge_second_con = newton_method(f,bound2_second_con, Ep, counter, rootdisplay)
+                                t_end=time.process_time()
+                                second_nm_con_time.append(t_end-t_start)
+                                second_nm_con.append(step_second_con+step_ge_second_con)
+                            else:
+                                second_nm_con_time.append(0)
+                                second_nm_con.append(0)
 
-       
-        titlelabels = "Function: {}  k={}".format(get_label(function_number), k)
+
+        
+            mean_step_ge.append(np.array(generel_nm)[np.nonzero(np.array(generel_nm))].mean())
+            mean_step_ie.append(np.array(initialestimator_nm)[np.nonzero(np.array(initialestimator_nm))].mean())
+            mean_step_ie_con.append(np.array(initialestimator_nm_con)[np.nonzero(np.array(initialestimator_nm_con))].mean())
+            mean_step_ie_second.append(np.array(second_nm)[np.nonzero(np.array(second_nm))].mean())
+            mean_step_ie_second_con.append(np.array(second_nm_con)[np.nonzero(np.array(second_nm_con))].mean())
+            #print("time:=",np.array(generel_nm_time)[np.nonzero(np.array(generel_nm_time))].mean())
+            mean_step_ge_time.append(np.array(generel_nm_time)[np.nonzero(np.array(generel_nm_time))].mean())
+            mean_step_ie_time.append(np.array(initialestimator_nm_time)[np.nonzero(np.array(initialestimator_nm_time))].mean())
+            mean_step_ie_con_time.append(np.array(initialestimator_nm_con_time)[np.nonzero(np.array(initialestimator_nm_con_time))].mean())
+            mean_step_ie_second_time.append(np.array(second_nm_time)[np.nonzero(np.array(second_nm_time))].mean())
+            mean_step_ie_second_con_time.append(np.array(second_nm_con_time)[np.nonzero(np.array(second_nm_con_time))].mean())
+           
+           #print(k_list)
+        N=5
+        ind=np.arange(N)
+        width=0.12
+        fig=plt.figure()
+        r1=plt.bar(ind,mean_step_ge,width,color='r')
+        r2=plt.bar(ind+width,mean_step_ie,width,color='g')
+        r3=plt.bar(ind+width*2,mean_step_ie_con,width,color='b')
+        r4=plt.bar(ind+width*3,mean_step_ie_second,width,color='y')
+        r5=plt.bar(ind+width*4,mean_step_ie_second_con,width,color='m')
+        plt.xticks([r+width*2 for r in range(N)],k_list)
+        titlelabels = "Function: {}".format(get_label(function_number))
         plt.title(titlelabels)
-        plt.ylabel("Number of Steps")
-        plt.xlabel("Input")
-        if not (len(initialestimator_nm) == 0):
-            plt.plot(input_range,initialestimator_nm, label='NM_IE')
-        if not (len(generel_nm) == 0):
-            plt.plot(input_range, generel_nm, label='General_NM')
-        if not (len(initialestimator_nm_con) == 0):
-            plt.plot(input_range, initialestimator_nm_con, label='NM_IE_CON')
-        if not (len(second_nm) == 0):
-            plt.plot(input_range, second_nm, label='sign+second')
-        if not (len(second_nm_con) == 0):
-            plt.plot(input_range, second_nm_con, label='CON+second')
-        plt.legend()
+        plt.ylabel("Number of Average Steps")
+        plt.legend((r1[0],r2[0],r3[0],r4[0],r5[0]),('GE_NM','IE+NM','IE_con+NM','IE(S)+NM','IE(S)_con+NM'))
         plt.show()
 
-        titlelabels = "Function: {}  k={}".format(get_label(function_number), k)
+#print("time mean:=",mean_step_ge_time)
+        r1=plt.bar(ind,mean_step_ge_time,width,color='r')
+        r2=plt.bar(ind+width,mean_step_ie_time,width,color='g')
+        r3=plt.bar(ind+width*2,mean_step_ie_con_time,width,color='b')
+        r4=plt.bar(ind+width*3,mean_step_ie_second_time,width,color='y')
+        r5=plt.bar(ind+width*4,mean_step_ie_second_con_time,width,color='m')
+        plt.xticks([r+width*2 for r in range(N)],k_list)
+        titlelabels = "Function: {}".format(get_label(function_number))
         plt.title(titlelabels)
-        plt.ylabel("Time(nanosecond)")
-        plt.xlabel("Input")
-        if not (len(initialestimator_nm_time) == 0):
-            plt.plot(input_range, initialestimator_nm_time, label='NM_IE')
-        if not (len(generel_nm_time) == 0):
-            plt.plot(input_range, generel_nm_time, label='General_NM')
-        if not (len(initialestimator_nm_con_time) == 0):
-            plt.plot(input_range, initialestimator_nm_con_time, label='NM_IE_CON')
-        if not (len(second_nm_time) == 0):
-            plt.plot(input_range, second_nm_time, label='sign+second')
-        if not (len(second_nm_con_time) == 0):
-            plt.plot(input_range, second_nm_con_time, label='CON+second')
-        plt.legend()
+        plt.ylabel("Number of Average time(nanoseconds)")
+        plt.legend((r1[0],r2[0],r3[0],r4[0],r5[0]),('GE_NM','IE+NM','IE_con+NM','IE(S)+NM','IE(S)_con+NM'))
         plt.show()
-
-        titlelabels = "Function: {}  k={}".format(get_label(function_number), k)
-        plt.title(titlelabels)
-        plt.ylabel("Number of Steps")
-        plt.xlabel("Input")
-        if not (len(initialestimator_nm) == 0):
-            plt.plot(input_range,[mean(initialestimator_nm)]*len(input_range), label='NM_IE')
-        if not (len(generel_nm) == 0):
-            plt.plot(input_range,[mean(generel_nm)]*len(input_range), label='General_NM')
-        if not (len(initialestimator_nm_con) == 0):
-            plt.plot(input_range,[mean(initialestimator_nm_con)]*len(input_range), label='NM_IE_CON')
-        if not (len(second_nm) == 0):
-            plt.plot(input_range,[mean(second_nm)]*len(input_range), label='sign+second')
-        if not (len(second_nm_con) == 0):
-            plt.plot(input_range,[mean( second_nm_con)]*len(input_range), label='CON+second')
-        plt.legend()
-        plt.show()
-            
-        titlelabels = "Function: {}  k={}".format(get_label(function_number), k)
-        plt.title(titlelabels)
-        plt.ylabel("Average Time(nanosecond)")
-        plt.xlabel("Input")
-        if not (len(initialestimator_nm_time) == 0):
-            plt.plot(input_range, [mean(initialestimator_nm_time)]*len(input_range), label='NM_IE')
-        if not (len(generel_nm_time) == 0):
-            plt.plot(input_range,[mean(generel_nm_time)]*len(input_range), label='General_NM')
-        if not (len(initialestimator_nm_con_time) == 0):
-            plt.plot(input_range,[mean(initialestimator_nm_con_time)]*len(input_range), label='NM_IE_CON')
-        if not (len(second_nm_time) == 0):
-            plt.plot(input_range,[mean(second_nm_time)]*len(input_range) , label='sign+second')
-        if not (len(second_nm_con_time) == 0):
-            plt.plot(input_range,[mean(second_nm_con_time)]*len(input_range), label='CON+second')
-        plt.legend()
-        plt.show()
-
 
     else:
         
