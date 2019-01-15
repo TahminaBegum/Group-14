@@ -399,11 +399,10 @@ if __name__ == '__main__':
     #temp=FloatDPBounds(Decimal(1.2),DoublePrecision())
     #print("temp ",temp.upper()-temp.lower())
     # To get the value of Epsilon
-    #pr = DoublePrecision()
-    #epp=FloatDP.eps(pr)
-    #print("ep",epp)
-    e = UpperInterval({cast_exact(.00000001): 0})
-    Ep = FloatDPApproximation(cast_singleton(e))
+    pr = DoublePrecision()
+    Ep = FloatDP.eps(pr)
+    #print("type ep",type(Ep),Ep)
+    Ep = FloatDPApproximation(Ep)
     
     print("")
     print("Welcome...")
