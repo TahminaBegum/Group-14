@@ -379,7 +379,7 @@ if __name__ == '__main__':
     second_nm_con_time = []
     
 
-    print(dir(FloatDP))
+    #print(dir(FloatDP))
    
     # To get the value of Epsilon
     pr = DoublePrecision()
