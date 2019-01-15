@@ -38,7 +38,7 @@ def intialization_method():
     print("2. General Newton Method with Initial estimator by using sign (NM_IE_SIGN)")
     print("3. General Newton Method with Initial estimator by using contractor (NM_IE_CON)")
     print("4. General Newton Method with Initial estimator by using sign method and second derivatives (NM_IE_SIGN_SECOND-DERIVATIVE)")
-    print("5. General Newton Method with Initial estimator by using contractor method and second derivatives (NM_IE_SIGN_SECOND-DERIVATIVE)")
+    print("5. General Newton Method with Initial estimator by using contractor method and second derivatives (NM_IE_CON_SECOND-DERIVATIVE)")
 
 
 def select_function(function_number, x):
@@ -433,7 +433,7 @@ if __name__ == '__main__':
         #k = float(input("The value of k:"))
         kr=0
         for k1 in range(kr, kr+5):
-            k=k1+0.5
+            k=k1+0.6
             k_list.append(k)
             interval = 1
             for a in range(-input_r, input_r+1):
