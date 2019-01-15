@@ -385,9 +385,9 @@ if __name__ == '__main__':
     # To get the value of Epsilon
     pr = DoublePrecision()
     epp=FloatDP.eps(pr)
-    print("ep",epp)
-    e = UpperInterval({cast_exact(.00000001): 0})
-    Ep = FloatDPApproximation(cast_singleton(e))
+    #print("ep",epp)
+    #e = UpperInterval({cast_exact(.00000001): 0})
+    Ep = FloatDPApproximation(Ep)
     
     print("")
     print("Welcome...")
