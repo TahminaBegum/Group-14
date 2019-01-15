@@ -36,7 +36,7 @@ def intialization_method():
     print("2. General Newton Method with Initial estimator by using sign (NM_IE_SIGN)")
     print("3. General Newton Method with Initial estimator by using contractor (NM_IE_CON)")
     print("4. General Newton Method with Initial estimator by using sign method and second derivatives (NM_IE_SIGN_SECOND-DERIVATIVE)")
-    print("5. General Newton Method with Initial estimator by using contractor method and second derivatives (NM_IE_SIGN_SECOND-DERIVATIVE)")
+    print("5. General Newton Method with Initial estimator by using contractor method and second derivatives (NM_IE_CON_SECOND-DERIVATIVE)")
 
 
 def select_function(function_number, x):
@@ -499,7 +499,7 @@ if __name__ == '__main__':
         if not (len(second_nm) == 0):
             plt.plot(input_range, second_nm, label='NM_IE_SIGN_SECOND-DERIVATIVE')
         if not (len(second_nm_con) == 0):
-            plt.plot(input_range, second_nm_con, label='NM_IE_SIGN_SECOND-DERIVATIVE')
+            plt.plot(input_range, second_nm_con, label='NM_IE_CON_SECOND-DERIVATIVE')
         plt.legend()
         plt.show()
 
