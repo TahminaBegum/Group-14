@@ -532,7 +532,7 @@ if __name__ == '__main__':
         titlelabels = "Function: {}".format(get_label(function_number))
         plt.title(titlelabels)
         plt.ylabel("Number of Average Steps")
-        plt.legend((r1[0],r2[0],r3[0],r4[0],r5[0]),('General_NM','NM_IE_SIGN','NM_IE_CON','NM_IE_SIGN_SECOND-DERIVATIVE','NM_IE_SIGN_SECOND-DERIVATIVE'))
+        plt.legend((r1[0],r2[0],r3[0],r4[0],r5[0]),('General_NM','NM_IE_SIGN','NM_IE_CON','NM_IE_SIGN_SECOND-DERIVATIVE','NM_IE_CON_SECOND-DERIVATIVE'))
         plt.show()
 
 #print("time mean:=",mean_step_ge_time)
@@ -545,7 +545,7 @@ if __name__ == '__main__':
         titlelabels = "Function: {}".format(get_label(function_number))
         plt.title(titlelabels)
         plt.ylabel("Number of Average time(nanoseconds)")
-        plt.legend((r1[0],r2[0],r3[0],r4[0],r5[0]),('General_NM','NM_IE_SIGN','NM_IE_CON','NM_IE_SIGN_SECOND-DERIVATIVE','NM_IE_SIGN_SECOND-DERIVATIVE'))
+        plt.legend((r1[0],r2[0],r3[0],r4[0],r5[0]),('General_NM','NM_IE_SIGN','NM_IE_CON','NM_IE_SIGN_SECOND-DERIVATIVE','NM_IE_CON_SECOND-DERIVATIVE'))
         plt.show()
 
     else:
@@ -602,6 +602,6 @@ if __name__ == '__main__':
                     if not(decide(bound1_second_con==bound2_second_con)):
                         step_ge_second_con = newton_method(f,bound2_second_con, Ep, counter, rootdisplay)
                         t_end=time.process_time()
-                        print("The total steps in NM_IE_SIGN_SECOND-DERIVATIVE(",bound2_second_con, "):= ",
+                        print("The total steps in NM_IE_CON_SECOND-DERIVATIVE(",bound2_second_con, "):= ",
                           step_ge_second_con + step_second_con)
-                        print("The total time in NM_IE_SIGN_SECOND-DERIVATIVE(", bound2_second_con, "):= ",t_end-t_start)
+                        print("The total time in NM_IE_CON_SECOND-DERIVATIVE(", bound2_second_con, "):= ",t_end-t_start)
