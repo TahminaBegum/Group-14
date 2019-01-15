@@ -14,14 +14,11 @@ def print_function():
     
     # Print all the function in the screen
  
-    print("1. x*x-2")
-    print("2. x*x*x-2")
-    #print("3. (-x*x)-2*x+1")  
-    #print("3. (x-3)*(x-3)-4") 
-    print("3. 4*(x-1)*(x-1)*(x-2)+0.5")
+    print("1. -x*x-2*x+1")
+    print("2. (x-3)*(x-3)-4")
+    print("3. 4*(x-1)*(x-1)*(x-2)+ 0.5")
     #print("3. (x-9)*(x*x-1)*(x+1)+6")
     print("4. (x-2)*(x-4)*(x-1)")
-
 
 
 def intialization_method():
@@ -45,14 +42,12 @@ def select_function(function_number, x):
         """
 
     if function_number == 1:
-        f = x * x - 2
+        f = -x*x-2*x+1
     elif function_number == 2:
-        f = x * x * x - 2
+        f = (x-3)*(x-3)-4
     elif function_number == 3:
     #f = (x - 9) * (x * x - 1) * (x + 1) + 6
-    #f=(-x*x)-2*x+1
-    #f = (x - 3) * (x - 3) - 4
-        f = 4 * (x - 1) * (x - 1) * (x - 2) + 1/2
+        f= 4*(x-1)*(x-1)*(x-2)+ 0.5
     else:
         f = (x - 2) * (x - 4) * (x - 1)
     
@@ -63,14 +58,12 @@ def get_label(function_number):
     # use to display label in the graph
     
     if function_number == 1:
-        return "x*x-2"
+        return "-x*x-2*x+1"
     elif function_number == 2:
-        return "x*x*x-2"
+        return "(x-3)*(x-3)-4"
     elif function_number == 3:
     #return "(x-9)*(x*x-1)*(x+1)+6"
-    #return "(-x*x)-2*x+1"
-    #return "(x-3)*(x-3)-4"
-        return "4*(x-1)*(x-1)*(x-2)+0.5"
+        return "4*(x-1)*(x-1)*(x-2)+ 0.5"
     else:
         return "(x-2)*(x-4)*(x-1)"
 
