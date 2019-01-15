@@ -16,19 +16,19 @@ def print_function():
  
     print("1. x*x-2")
     print("2. x*x*x-2")
-    print("3. (x-9)*(x*x-1)*(x+1)+6")
+    print("3. (-x*x)-2*x+1")  
+    #print("3. (x-9)*(x*x-1)*(x+1)+6")
     print("4. (x-2)*(x-4)*(x-1)+7")
 
 
 def intialization_method():
     
     # Print all the method in the screen
-    
-    print("1. General Newton Method")
-    print("2. General Newton Method with Initial estimator by using sign")
-    print("3. General Newton Method with Initial estimator by using contractor")
-    print("4. General Newton Method with Initial estimator by using sign method and second derivatives")
-    print("5. General Newton Method with Initial estimator by using contractor method and second derivatives")
+    print("1. General Newton Method (General_NM)")
+    print("2. General Newton Method with Initial estimator by using sign (NM_IE_SIGN)")
+    print("3. General Newton Method with Initial estimator by using contractor (NM_IE_CON)")
+    print("4. General Newton Method with Initial estimator by using sign method and second derivatives (NM_IE_SIGN_SECOND-DERIVATIVE)")
+    print("5. General Newton Method with Initial estimator by using contractor method and second derivatives (NM_IE_SIGN_SECOND-DERIVATIVE)")
 
 
 def select_function(function_number, x):
@@ -116,7 +116,7 @@ def get_estimator_contractor(f, x, step, k1):
     dfx=derivative(f,x)
     
     if decide(dfx==0):
-        print("Zero derivative. No solution found in IE contractor.For x=",x)
+        print("Zero derivative. No solution found in NM_IE_CON method.For x=",x)
         return x,x,0
 
     h = fx /dfx
@@ -134,7 +134,7 @@ def get_estimator_contractor(f, x, step, k1):
             xp=x_new
 
     
-    print("Limit need to Increass")
+    print("Limit need to increase")
     return x,x,0
 
 
@@ -164,7 +164,7 @@ def newton_method(f, x, Ep, step, rootdisplay):
         fx=f(x)
         dfx= derivative(f, x)
         if decide(dfx==0):
-            print("Zero derivative. No solution found in NM.For x=",x)
+            print("Zero derivative. No solution found in General_NM method.For x=",x)
             return 0
         h = fx / dfx
         x = x - h
@@ -183,7 +183,7 @@ def get_estimator_sign_second(f, x, step_initial,k):
     deg=2
     dfx=differential(f,x,deg)
     if decide(dfx[(2,)]==0):
-        print("Zero derivative. No solution found in IE(second derivative)sign method.For x=",x)
+        print("Zero derivative. No solution found in NM_IE_SIGN_SECOND-DERIVATIVE method.For x=",x)
         return x,x,0
     h = FloatDPApproximation(dfx[(1,)])/ (2*FloatDPApproximation(dfx[(2,)]))
     #h = fx/ (2*FloatDPApproximation(dfx[(2,)]))
@@ -231,7 +231,7 @@ def get_estimator_sign_second_con(f,x, step_initial,k):
     deg=2
     dfx=differential(f,x,deg)
     if decide(dfx[(2,)]==0):
-        print("Zero derivative. No solution found in IE(second derivative)contractor method.For x=",x)
+        print("Zero derivative. No solution found in NM_IE_CON_SECOND-DERIVATIVE method.For x=",x)
         return x,x,0
     
     h = FloatDPApproximation(dfx[(1,)]) / (2*FloatDPApproximation(dfx[(2,)]))
@@ -296,7 +296,7 @@ def get_estimator_sign(f, x, step,k):
     dfx=derivative(f, x)
     #print("the dfx",dfx)
     if decide(dfx==0):
-        print("Zero derivative. No solution found in IE sign method.For x=",x)
+        print("Zero derivative. No solution found in NM_IE_SIGN method.For x=",x)
         return x,x,0
     h = fx /dfx
     xp=x
@@ -378,6 +378,8 @@ if __name__ == '__main__':
     second_nm_time = []
     second_nm_con_time = []
     
+
+    print(dir(FloatDP))
    
     # To get the value of Epsilon
     pr = DoublePrecision()
@@ -492,15 +494,15 @@ if __name__ == '__main__':
         plt.ylabel("Number of Steps")
         plt.xlabel("Input")
         if not (len(initialestimator_nm) == 0):
-            plt.plot(input_range,initialestimator_nm, label='NM_IE')
+            plt.plot(input_range,initialestimator_nm, label='NM_IE_SIGN')
         if not (len(generel_nm) == 0):
             plt.plot(input_range, generel_nm, label='General_NM')
         if not (len(initialestimator_nm_con) == 0):
             plt.plot(input_range, initialestimator_nm_con, label='NM_IE_CON')
         if not (len(second_nm) == 0):
-            plt.plot(input_range, second_nm, label='sign+second')
+            plt.plot(input_range, second_nm, label='NM_IE_SIGN_SECOND-DERIVATIVE')
         if not (len(second_nm_con) == 0):
-            plt.plot(input_range, second_nm_con, label='CON+second')
+            plt.plot(input_range, second_nm_con, label='NM_IE_CON_SECOND-DERIVATIVE')
         plt.legend()
         plt.show()
 
@@ -509,15 +511,15 @@ if __name__ == '__main__':
         plt.ylabel("Time(nanosecond)")
         plt.xlabel("Input")
         if not (len(initialestimator_nm_time) == 0):
-            plt.plot(input_range, initialestimator_nm_time, label='NM_IE')
+            plt.plot(input_range, initialestimator_nm_time, label='NM_IE_SIGN')
         if not (len(generel_nm_time) == 0):
             plt.plot(input_range, generel_nm_time, label='General_NM')
         if not (len(initialestimator_nm_con_time) == 0):
             plt.plot(input_range, initialestimator_nm_con_time, label='NM_IE_CON')
         if not (len(second_nm_time) == 0):
-            plt.plot(input_range, second_nm_time, label='sign+second')
+            plt.plot(input_range, second_nm_time, label='NM_IE_SIGN_SECOND-DERIVATIVE')
         if not (len(second_nm_con_time) == 0):
-            plt.plot(input_range, second_nm_con_time, label='CON+second')
+            plt.plot(input_range, second_nm_con_time, label='NM_IE_CON_SECOND-DERIVATIVE')
         plt.legend()
         plt.show()
 
@@ -526,15 +528,15 @@ if __name__ == '__main__':
         plt.ylabel("Average Number of Steps")
         plt.xlabel("Input")
         if not (len(initialestimator_nm) == 0):
-            plt.plot(input_range,[mean(initialestimator_nm)]*len(input_range), label='NM_IE')
+            plt.plot(input_range,[mean(initialestimator_nm)]*len(input_range), label='NM_IE_SIGN')
         if not (len(generel_nm) == 0):
             plt.plot(input_range,[mean(generel_nm)]*len(input_range), label='General_NM')
         if not (len(initialestimator_nm_con) == 0):
             plt.plot(input_range,[mean(initialestimator_nm_con)]*len(input_range), label='NM_IE_CON')
         if not (len(second_nm) == 0):
-            plt.plot(input_range,[mean(second_nm)]*len(input_range), label='sign+second')
+            plt.plot(input_range,[mean(second_nm)]*len(input_range), label='NM_IE_SIGN_SECOND-DERIVATIVE')
         if not (len(second_nm_con) == 0):
-            plt.plot(input_range,[mean( second_nm_con)]*len(input_range), label='CON+second')
+            plt.plot(input_range,[mean( second_nm_con)]*len(input_range), label='NM_IE_CON_SECOND-DERIVATIVE')
         plt.legend()
         plt.show()
             
@@ -543,15 +545,15 @@ if __name__ == '__main__':
         plt.ylabel("Average Time(nanosecond)")
         plt.xlabel("Input")
         if not (len(initialestimator_nm_time) == 0):
-            plt.plot(input_range, [mean(initialestimator_nm_time)]*len(input_range), label='NM_IE')
+            plt.plot(input_range, [mean(initialestimator_nm_time)]*len(input_range), label='NM_IE_SIGN')
         if not (len(generel_nm_time) == 0):
             plt.plot(input_range,[mean(generel_nm_time)]*len(input_range), label='General_NM')
         if not (len(initialestimator_nm_con_time) == 0):
             plt.plot(input_range,[mean(initialestimator_nm_con_time)]*len(input_range), label='NM_IE_CON')
         if not (len(second_nm_time) == 0):
-            plt.plot(input_range,[mean(second_nm_time)]*len(input_range) , label='sign+second')
+            plt.plot(input_range,[mean(second_nm_time)]*len(input_range) , label='NM_IE_SIGN_SECOND-DERIVATIVE')
         if not (len(second_nm_con_time) == 0):
-            plt.plot(input_range,[mean(second_nm_con_time)]*len(input_range), label='CON+second')
+            plt.plot(input_range,[mean(second_nm_con_time)]*len(input_range), label='NM_IE_CON_SECOND-DERIVATIVE')
         plt.legend()
         plt.show()
 
