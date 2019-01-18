@@ -137,7 +137,7 @@ def get_estimator_contractor(f, x, step, k1):
 
     
     print("Limit need to Increass")
-#return x,x,0
+    return x,x,-1
 
 
 
@@ -187,26 +187,20 @@ def get_estimator_sign_second(f, x, step_initial,k):
     if decide(dfx[(2,)]==0):
         print("Zero derivative. No solution found in IE(second derivative)sign method.For x=",x)
         return x,x,0
-    h = FloatDPApproximation(dfx[(1,)])/ (2*FloatDPApproximation(dfx[(2,)]))
+    #h = FloatDPApproximation(dfx[(1,)])/ (2*FloatDPApproximation(dfx[(2,)]))
     #h = fx/ (2*FloatDPApproximation(dfx[(2,)]))
     #print("x fx dfx h ",x,fx,dfx[(2,)], h)
-    xp=x
-    step = step_initial
-    for j in range(1,10):
-        #print("j",j)
-        step = step + 1
-        x_new = x - k_step * h
-        k_step = k_step * 2         # make the k double in each iteration
-        fx_new = f(x_new)
-        sign2 = decide(fx_new > 0) and 1 or -1
-        if not (sign1 == sign2):
-            return xp,x_new, step
-        else:
-            xp=x_new
-
-    #print("j sign1 sign2",j,sign1,sign2)
-    h = fx/ (2*FloatDPApproximation(dfx[(2,)]))
-    #print("x fx dfx h ",x,fx,dfx[(2,)], h)
+    fd1=FloatDPApproximation(dfx[(1,)])
+    fd2=2*FloatDPApproximation(dfx[(2,)])
+    #print("x fx fd1 fd2 :=",x,fx,fd1,fd2)
+    #df1s=fd1*fd1
+    #print("fd1:=",df1s)
+    #b=(2*fd2*fx)
+    #print("b:=",b)
+    sq=sqrt(abs((fd1*fd1)-(2*fd2*fx)))
+    #print("sq in con :=",sq)
+    h=(sq-fd1)/fd2
+    #print("h:=",h)
     xp=x
     step = step_initial
     for j in range(1,10):
@@ -222,6 +216,7 @@ def get_estimator_sign_second(f, x, step_initial,k):
             xp=x_new
 
     print("limit need to Increase")
+    return x,x,-1
 
 
 
@@ -236,21 +231,18 @@ def get_estimator_sign_second_con(f,x, step_initial,k):
         print("Zero derivative. No solution found in IE(second derivative)contractor method.For x=",x)
         return x,x,0
     
-    h = FloatDPApproximation(dfx[(1,)]) / (2*FloatDPApproximation(dfx[(2,)]))
-    xp=x
-    step = step_initial
-    for j in range(1,10):
-        step = step + 1
-        x_new = x - k_step * h
-        k_step = k_step * 2         # make the k double in each iteration
-        fx_new = f(make_interval(xp, x_new))
-        sign2 = decide(fx_new > 0) and 1 or -1
-        if not (sign1 == sign2):
-            return xp,x_new, step
-        else:
-            xp=x_new
-
-    h = fx/ (2*FloatDPApproximation(dfx[(2,)]))
+    #h = FloatDPApproximation(dfx[(1,)]) / (2*FloatDPApproximation(dfx[(2,)]))
+    fd1=FloatDPApproximation(dfx[(1,)])
+    fd2=2*FloatDPApproximation(dfx[(2,)])
+    #print("x fx fd1 fd2 :=",x,fx,fd1,fd2)
+    #df1s=fd1*fd1
+    #print("fd1:=",df1s)
+    #b=(2*fd2*fx)
+    #print("b:=",b)
+    sq=sqrt(abs((fd1*fd1)-(2*fd2*fx)))
+#print("sq in con :=",sq)
+    h=(sq-fd1)/fd2
+#print("h:=",h)
     xp=x
     step = step_initial
     for j in range(1,10):
@@ -265,6 +257,7 @@ def get_estimator_sign_second_con(f,x, step_initial,k):
             xp=x_new
 
     print("limit need to Increase")
+    return x,x,-1
 
 
 
@@ -314,7 +307,7 @@ def get_estimator_sign(f, x, step,k):
             xp=x_new
 
     print("limit need to Increase")
-#return x,x,0
+    return x,x,-1
 
 
 def askbool(message):
@@ -420,7 +413,7 @@ if __name__ == '__main__':
         k = float(input("The value of k:"))
         interval = 1
        
-        for a in range(-input_r, input_r+1):
+        for a in np.arange(-input_r, input_r+1,0.1):
             input_x = interval * a
             #input_range.append(input_x)
             x = FloatDPApproximation(input_x)
@@ -448,10 +441,10 @@ if __name__ == '__main__':
                             step_nm = newton_method(f, bound1, Ep, counter, rootdisplay)
                             t_end=time.process_time()
                             initialestimator_nm_time.append(t_end-t_start)
-                            initialestimator_nm.append(step + step_nm)
+                            initialestimator_nm.append(step) #i change the step+stepnm
                         else:
-                            initialestimator_nm_time.append(0)
-                            initialestimator_nm.append(0)
+                            initialestimator_nm_time.append(100)
+                            initialestimator_nm.append(10000)
                 for j in range(len(all_method)):
                     if all_method[j] == 3:
                         t_start=time.process_time()
@@ -461,10 +454,10 @@ if __name__ == '__main__':
                             step_nm_con = newton_method(f, bound1_con, Ep, counter, rootdisplay)
                             t_end=time.process_time()
                             initialestimator_nm_con_time.append(t_end-t_start)
-                            initialestimator_nm_con.append(step_con + step_nm_con)
+                            initialestimator_nm_con.append(step_con)
                         else:
-                            initialestimator_nm_con_time.append(0)
-                            initialestimator_nm_con.append(0)
+                            initialestimator_nm_con_time.append(100)
+                            initialestimator_nm_con.append(10000)
                 for j in range(len(all_method)):
                     if all_method[j] == 4:
                         t_start=time.process_time()
@@ -474,10 +467,10 @@ if __name__ == '__main__':
                             step_ge_sign_second= newton_method(f,bound1_second, Ep, counter, rootdisplay)
                             t_end=time.process_time()
                             second_nm_time.append(t_end-t_start)
-                            second_nm.append(step_second+step_ge_sign_second)
+                            second_nm.append(step_second)
                         else:
-                            second_nm_time.append(0)
-                            second_nm.append(0)
+                            second_nm_time.append(100)
+                            second_nm.append(10000)
 
                 for j in range(len(all_method)):
                     if all_method[j] == 5:
@@ -488,15 +481,15 @@ if __name__ == '__main__':
                             step_ge_second_con = newton_method(f,bound1_second_con, Ep, counter, rootdisplay)
                             t_end=time.process_time()
                             second_nm_con_time.append(t_end-t_start)
-                            second_nm_con.append(step_second_con+step_ge_second_con)
+                            second_nm_con.append(step_second_con)
                         else:
-                            second_nm_con_time.append(0)
-                            second_nm_con.append(0)
+                            second_nm_con_time.append(100)
+                            second_nm_con.append(10000)
 
         titlelabels = "Function: {}  k={}".format(get_label(function_number), k)
         plt.title(titlelabels)
-        plt.ylabel("Number of Steps")
-        plt.xlabel("Input")
+        plt.ylabel("Number of Steps",fontsize=20)
+        plt.xlabel("Approximation Input",fontsize=20)
 
         if not (len(generel_nm) == 0):
             plt.plot(input_range, generel_nm, label='General_NM')
@@ -515,17 +508,19 @@ if __name__ == '__main__':
             bar_list.append(mean(second_nm))
             bars_name.append('sign+second')
         if not (len(second_nm_con) == 0):
-            plt.plot(input_range, second_nm_con,'c^:',label='CON+second')
+            plt.plot(input_range,second_nm_con,'c^:',label='CON+second')
             bar_list.append(mean(second_nm_con))
             bars_name.append('CON+second')
+        x1,x2,y1,y2 = plt.axis()
+        plt.axis((x1,x2,0,250))
         plt.legend()
         plt.show()
 
 
         titlelabels = "Function: {}  k={}".format(get_label(function_number), k)
         plt.title(titlelabels)
-        plt.ylabel("Time(nanosecond)")
-        plt.xlabel("Input")
+        plt.ylabel("Time(nanosecond)",fontsize=20)
+        plt.xlabel("Approximation Input",fontsize=20)
         if not (len(generel_nm_time) == 0):
             plt.plot(input_range, generel_nm_time, label='General_NM')
             bar_list_time.append(mean(generel_nm_time))
@@ -541,20 +536,22 @@ if __name__ == '__main__':
         if not (len(second_nm_con_time) == 0):
             plt.plot(input_range, second_nm_con_time, label='CON+second')
             bar_list_time.append(mean(second_nm_con_time))
+        x1,x2,y1,y2 = plt.axis()
+        plt.axis((x1,x2,0,0.1))
         plt.legend()
         plt.show()
 
         #print(bar_list)
-        x_pos = np.arange(len(bar_list))
-        plt.bar(x_pos, bar_list, color=['red', 'yellow', 'green', 'blue', 'cyan'])
-        plt.xticks(x_pos, bars_name)
-        plt.show()
+#x_pos = np.arange(len(bar_list))
+#plt.bar(x_pos, bar_list, color=['red', 'yellow', 'green', 'blue', 'cyan'])
+#plt.xticks(x_pos, bars_name)
+#plt.show()
             
             
-        x_pos = np.arange(len(bar_list_time))
-        plt.bar(x_pos, bar_list_time, color=['red', 'yellow', 'green', 'blue', 'cyan'])
-        plt.xticks(x_pos, bars_name)
-        plt.show()
+#x_pos = np.arange(len(bar_list_time))
+#plt.bar(x_pos, bar_list_time, color=['red', 'yellow', 'green', 'blue', 'cyan'])
+#plt.xticks(x_pos, bars_name)
+#plt.show()
     
     
 
