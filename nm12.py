@@ -496,21 +496,21 @@ if __name__ == '__main__':
             bar_list.append(mean(generel_nm))
             bars_name.append('General_NM')
         if not (len(initialestimator_nm) == 0):
-            plt.plot(input_range,initialestimator_nm,label='NM_IE')
+            plt.plot(input_range,initialestimator_nm,label='NM_IE_SIGN')
             bar_list.append(mean(initialestimator_nm))
-            bars_name.append('NM_IE')
+            bars_name.append('NM_IE_SIGN')
         if not (len(initialestimator_nm_con) == 0):
             plt.plot(input_range, initialestimator_nm_con,'r:',label='NM_IE_CON')
             bar_list.append(mean(initialestimator_nm_con))
             bars_name.append('NM_IE_CON')
         if not (len(second_nm) == 0):
-            plt.plot(input_range, second_nm, label='sign+second')
+            plt.plot(input_range, second_nm, label='NM_IE_SIGN_TAYLOR')
             bar_list.append(mean(second_nm))
-            bars_name.append('sign+second')
+            bars_name.append('NM_IE_SIGN_TAYLOR')
         if not (len(second_nm_con) == 0):
-            plt.plot(input_range,second_nm_con,'c^:',label='CON+second')
+            plt.plot(input_range,second_nm_con,'c^:',label='NM_IE_CON_TAYLOR')
             bar_list.append(mean(second_nm_con))
-            bars_name.append('CON+second')
+            bars_name.append('NM_IE_CON_TAYLOR')
         x1,x2,y1,y2 = plt.axis()
         plt.axis((x1,x2,0,250))
         plt.legend()
@@ -525,16 +525,16 @@ if __name__ == '__main__':
             plt.plot(input_range, generel_nm_time, label='General_NM')
             bar_list_time.append(mean(generel_nm_time))
         if not (len(initialestimator_nm_time) == 0):
-            plt.plot(input_range, initialestimator_nm_time, label='NM_IE')
+            plt.plot(input_range, initialestimator_nm_time, label='NM_IE_SIGN')
             bar_list_time.append(mean(initialestimator_nm_time))
         if not (len(initialestimator_nm_con_time) == 0):
             plt.plot(input_range, initialestimator_nm_con_time, label='NM_IE_CON')
             bar_list_time.append(mean(initialestimator_nm_con_time))
         if not (len(second_nm_time) == 0):
-            plt.plot(input_range, second_nm_time, label='sign+second')
+            plt.plot(input_range, second_nm_time, label='NM_IE_SIGN_TAYLOR')
             bar_list_time.append(mean(second_nm_time))
         if not (len(second_nm_con_time) == 0):
-            plt.plot(input_range, second_nm_con_time, label='CON+second')
+            plt.plot(input_range, second_nm_con_time, label='NM_IE_CON_TAYLOR')
             bar_list_time.append(mean(second_nm_con_time))
         x1,x2,y1,y2 = plt.axis()
         plt.axis((x1,x2,0,0.1))
