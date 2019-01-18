@@ -16,9 +16,8 @@ def print_function():
 
     print("1. x*x-2")
     print("2. x*x*x-2")
-    print("3. (x-9)*(x*x-1)*(x+1)+6")
-    print("4. (x-2)*(x-4)*(x-1)+7")
-
+    print("3. (x-1)*(x-1)*(x-1)+(x-4)*(x-4)-8")
+    print("4. (x-1)*(x+2)*(x+2)*(x+2)*(x-2)*(x-2)-1")
 
 def intialization_method():
     
@@ -45,11 +44,11 @@ def select_function(function_number, x):
         f = x * x - 2
     elif function_number == 2:
     #f = x * x * x * x + x * x * x     #X^4-2 and x^4-12 ;X^4+X^3
-        f=x*x*x-2
+        f = x * x * x - 2
     elif function_number == 3:
-        f = (x - 9) + (x * x - 1) + (x + 1)
+        f = (x - 1) * (x - 1) * (x - 1) + (x - 4) * (x - 4) - 8
     else:
-        f = (x - 2) + (x - 4) + (x - 1)+ x
+        f = (x - 1) * (x + 2) * (x + 2) * (x + 2) * (x - 2) * (x - 2) - 1
     
     return f
 
@@ -58,13 +57,15 @@ def get_label(function_number):
     # use to display label in the graph
     
     if function_number == 1:
-        return "x*x-2"
+        return "x * x - 2"
     elif function_number == 2:
         return "x*x*x-2"
     elif function_number == 3:
-        return "(x-9)*(x*x-1)*(x+1)+6"
+        return "(x-1)*(x-1)*(x-1)+(x-4)*(x-4)-8"
     else:
-        return "(x-2)*(x-4)*(x-1)+7"
+        return "(x-1)*(x+2)*(x+2)*(x+2)*(x-2)*(x-2)-1"
+ 
+    return f
 
 def make_interval(bnd1, bnd2):
     
@@ -572,7 +573,7 @@ if __name__ == '__main__':
         plt.title(titlelabels)
         plt.ylabel("Number of Average Steps",fontsize=20)
         plt.xlabel("k",fontsize=20)
-        plt.legend((r1[0],r2[0],r3[0],r4[0],r5[0]),('GE_NM','IE+NM','IE_con+NM','IE(S)+NM','IE(S)_con+NM'))
+        plt.legend((r2[0],r3[0],r4[0],r5[0]),('IE+NM','IE_con+NM','IE(S)+NM','IE(S)_con+NM'))
         plt.show()
 
         r1=plt.bar(ind,mean_step_ge_time,width,color='r')
@@ -585,7 +586,7 @@ if __name__ == '__main__':
         plt.title(titlelabels)
         plt.ylabel("Number of Average time(nanoseconds)",fontsize=20)
         plt.xlabel("k",fontsize=20)
-        plt.legend((r1[0],r2[0],r3[0],r4[0],r5[0]),('GE_NM','IE+NM','IE_con+NM','IE(S)+NM','IE(S)_con+NM'))
+        plt.legend((r2[0],r3[0],r4[0],r5[0]),('IE+NM','IE_con+NM','IE(S)+NM','IE(S)_con+NM'))
         plt.show()
 
 
