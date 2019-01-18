@@ -55,6 +55,8 @@ def get_label(function_number):
         return "(x - 1) * (x - 1) * (x - 1) + (x - 4) * (x - 4) - 8"
     else:
         return "(x - 1) * (x + 2) * (x + 2) * (x + 2) * (x - 2) * (x - 2) - 1"
+ 
+    return f
 
 def make_interval(bnd1, bnd2):
     
