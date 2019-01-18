@@ -9,6 +9,14 @@ import numpy as np
 import pandas as pd
 import time
 
+def print_function():
+    
+    # Print all the function in the screen
+
+    print("1. x*x-2")
+    print("2. x*x*x-2")
+    print("3. (x-1)*(x-1)*(x-1)+(x-4)*(x-4)-8")
+    print("4. (x-1)*(x+2)*(x+2)*(x+2)*(x-2)*(x-2)-1")
 
 def intialization_method():
     
