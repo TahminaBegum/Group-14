@@ -10,16 +10,6 @@ import pandas as pd
 import time
 
 
-def print_function():
-    
-    # Print all the function in the screen
- 
-    print("1. x*x-2")
-    print("2. x*x*x-2")
-    print("3. (x-9)*(x*x-1)*(x+1)+6")
-    print("4. (x-2)*(x-4)*(x-1)+7")
-
-
 def intialization_method():
     
     # Print all the method in the screen
@@ -42,16 +32,14 @@ def select_function(function_number, x):
         """
 
     if function_number == 1:
-    #f = x * x - 2
-        f=(x-3)*(x-3)-4
+        f = x * x - 2
     elif function_number == 2:
+    #f = x * x * x * x + x * x * x     #X^4-2 and x^4-12 ;X^4+X^3
         f = x * x * x - 2
     elif function_number == 3:
-    #f = (x - 9) * (x * x - 1) * (x + 1) + 6
-    # f=(-x*x)-2*x+1
-        f=(x*x-9)*(x*x-1)*(x+1)+3
+        f = (x - 1) * (x - 1) * (x - 1) + (x - 4) * (x - 4) - 8
     else:
-        f = (x - 2) * (x - 4) * (x - 1) + 7
+        f = (x - 1) * (x + 2) * (x + 2) * (x + 2) * (x - 2) * (x - 2) - 1
     
     return f
 
@@ -60,14 +48,13 @@ def get_label(function_number):
     # use to display label in the graph
     
     if function_number == 1:
-        return "x*x-2"
+        return "x * x - 2"
     elif function_number == 2:
-        return "x*x*x-2"
+        return "x * x * x - 2"
     elif function_number == 3:
-    #return "(x-9)*(x*x-1)*(x+1)+6"
-        return "(-x*x)-2*x+1"
+        return "(x - 1) * (x - 1) * (x - 1) + (x - 4) * (x - 4) - 8"
     else:
-        return "(x-2)*(x-4)*(x-1)+7"
+        return "(x - 1) * (x + 2) * (x + 2) * (x + 2) * (x - 2) * (x - 2) - 1"
 
 def make_interval(bnd1, bnd2):
     
@@ -508,7 +495,7 @@ if __name__ == '__main__':
             bar_list.append(mean(second_nm))
             bars_name.append('NM_IE_SIGN_TAYLOR')
         if not (len(second_nm_con) == 0):
-            plt.plot(input_range,second_nm_con,'c^:',label='NM_IE_CON_TAYLOR')
+            plt.plot(input_range,second_nm_con,'c:',label='NM_IE_CON_TAYLOR')
             bar_list.append(mean(second_nm_con))
             bars_name.append('NM_IE_CON_TAYLOR')
         x1,x2,y1,y2 = plt.axis()
