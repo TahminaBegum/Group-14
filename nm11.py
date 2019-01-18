@@ -47,7 +47,7 @@ def select_function(function_number, x):
     if function_number == 1:
         f = x * x - 2
     elif function_number == 2:
-        f = x * x * x - 2
+        f = -x * x - 2*x+1
     elif function_number == 3:
     #f = (x - 9) * (x * x - 1) * (x + 1) + 6
     #f=(-x*x)-2*x+1

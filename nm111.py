@@ -433,7 +433,7 @@ if __name__ == '__main__':
         #k = float(input("The value of k:"))
         kr=0
         for k1 in range(kr, kr+5):
-            k=k1+0.6
+            k=k1+0.7
             k_list.append(k)
             interval = 1
             for a in range(-input_r, input_r+1):
