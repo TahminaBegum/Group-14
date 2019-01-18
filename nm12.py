@@ -58,11 +58,11 @@ def get_label(function_number):
     if function_number == 1:
         return "x * x - 2"
     elif function_number == 2:
-        return "x * x * x - 2"
+        return "x*x*x-2"
     elif function_number == 3:
-        return "(x - 1) * (x - 1) * (x - 1) + (x - 4) * (x - 4) - 8"
+        return "(x-1)*(x-1)*(x-1)+(x-4)*(x-4)-8"
     else:
-        return "(x - 1) * (x + 2) * (x + 2) * (x + 2) * (x - 2) * (x - 2) - 1"
+        return "(x-1)*(x+2)*(x+2)*(x+2)*(x-2)*(x-2)-1"
  
     return f
 
