@@ -408,9 +408,10 @@ if __name__ == '__main__':
     # To get the value of Epsilon
     #pr = DoublePrecision()
     #epp=FloatDP.eps(pr)
-    #print("ep",epp)
-    e = UpperInterval({cast_exact(.00000001): 0})
-    Ep = FloatDPApproximation(cast_singleton(e))
+    pr = DoublePrecision()
+    Ep = FloatDP.eps(pr)
+    #print("type ep",type(Ep),Ep)
+    Ep = FloatDPApproximation(Ep)
     
     print("")
     print("Welcome...")
@@ -573,7 +574,7 @@ if __name__ == '__main__':
         plt.title(titlelabels)
         plt.ylabel("Number of Average Steps",fontsize=20)
         plt.xlabel("k",fontsize=20)
-        plt.legend((r2[0],r3[0],r4[0],r5[0]),('IE+NM','IE_con+NM','IE(S)+NM','IE(S)_con+NM'))
+        plt.legend((r2[0],r3[0],r4[0],r5[0]),('NM_IE_SIGN','NM_IE_CON','NM_IE_SIGN_TAYLOR','NM_IE_CON_TAYLOR'))
         plt.show()
 
         r1=plt.bar(ind,mean_step_ge_time,width,color='r')
@@ -586,7 +587,7 @@ if __name__ == '__main__':
         plt.title(titlelabels)
         plt.ylabel("Number of Average time(nanoseconds)",fontsize=20)
         plt.xlabel("k",fontsize=20)
-        plt.legend((r2[0],r3[0],r4[0],r5[0]),('IE+NM','IE_con+NM','IE(S)+NM','IE(S)_con+NM'))
+        plt.legend((r2[0],r3[0],r4[0],r5[0]),('NM_IE_SIGN','NM_IE_CON','NM_IE_SIGN_TAYLOR','NM_IE_CON_TAYLOR'))
         plt.show()
 
 
