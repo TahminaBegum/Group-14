@@ -16,7 +16,7 @@ def print_function():
 
     print("1. x*x-2")
     print("2. x*x*x-2")
-    print("3. (x-1)*(x-1)*(x-1)+(x-4)*(x-4)-8")
+    print("3. (x-3)*(x-3)*(x+1)-2")
     print("4. (x-1)*(x+2)*(x+2)*(x+2)*(x-2)*(x-2)-1")
 
 def intialization_method():
@@ -44,9 +44,10 @@ def select_function(function_number, x):
         f = x * x - 2
     elif function_number == 2:
     #f = x * x * x * x + x * x * x     #X^4-2 and x^4-12 ;X^4+X^3
-        f = x * x * x - 2
+        f = pow(x, 3) - 2
     elif function_number == 3:
-        f = (x - 1) * (x - 1) * (x - 1) + (x - 4) * (x - 4) - 8
+        f = (x - 3) * (x - 3) * (x + 1) - 2
+        #(x - 1) * (x - 1) * (x - 1) + (x - 4) * (x - 4) - 8
     else:
         f = (x - 1) * (x + 2) * (x + 2) * (x + 2) * (x - 2) * (x - 2) - 1
     
@@ -61,7 +62,7 @@ def get_label(function_number):
     elif function_number == 2:
         return "x*x*x-2"
     elif function_number == 3:
-        return "(x-1)*(x-1)*(x-1)+(x-4)*(x-4)-8"
+        return "(x-3)*(x-3)*(x+1)-2"
     else:
         return "(x-1)*(x+2)*(x+2)*(x+2)*(x-2)*(x-2)-1"
  

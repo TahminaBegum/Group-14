@@ -16,8 +16,8 @@ def print_function():
 
     print("1. x*x-2")
     print("2. x*x*x-2")
-    print("3. (x-9)*(x*x-1)*(x+1)+6")
-    print("4. (x - 1)*pow((x+2),2)*pow((x - 2),2)-1")
+    print("3. (x-3)*(x-3)*(x+1)-2")
+    print("4. (x-1)*(x+2)*(x+2)*(x+2)*(x-2)*(x-2)-1")
 
 
 def intialization_method():
@@ -59,13 +59,13 @@ def get_label(function_number):
     # use to display label in the graph
     
     if function_number == 1:
-        return "x^2-2"
+        return "x * x - 2"
     elif function_number == 2:
-        return "x^3-2"
+        return "x*x*x-2"
     elif function_number == 3:
-        return "(x-9)*(x*x-1)*(x+1)+6"
+        return "(x-3)*(x-3)*(x+1)-2"
     else:
-        return "(x - 1)*pow((x+2),2)*pow((x - 2),2)-1"
+        return "(x-1)*(x+2)*(x+2)*(x+2)*(x-2)*(x-2)-1"
 
 def make_interval(bnd1, bnd2):
     
@@ -528,6 +528,7 @@ if __name__ == '__main__':
            
            
         N=len(k_list)
+        rounded_k = [round(elem, 2) for elem in k_list]
         ind=np.arange(N)
         width=0.12
             #r1=plt.bar(ind,mean_step_ge_time,width,color='r')
@@ -535,12 +536,12 @@ if __name__ == '__main__':
         r3=plt.bar(ind+width*2,initialestimator_nm_con_one_list,width,color='b')
         r4=plt.bar(ind+width*3,second_nm_one_list,width,color='c')
         r5=plt.bar(ind+width*4,second_nm_con_one_list,width,color='pink')
-        plt.xticks([r+width*2 for r in range(N)],k_list)
+        plt.xticks([r+width*2 for r in range(N)],rounded_k)
         titlelabels = "Function: {}".format(get_label(function_number))
         plt.title(titlelabels)
         plt.ylabel("Number of succesful one-steps in 100 attempts",fontsize=18)
         plt.xlabel("k",fontsize=18)
-        plt.legend((r2[0],r3[0],r4[0],r5[0]),('NM_IE_SIGN','NM_IE_CON','NM_IE_SIGN_TAYLOR','NM_IE_CON_TAYLOR'))
+        plt.legend((r2[0],r3[0],r4[0],r5[0]),('NM_IE_SIGN','NM_IE_CON','NM_IE_SIGN_TAYLOR','NM_IE_CON_TAYLOR')) 
         plt.show()
 
     else:
