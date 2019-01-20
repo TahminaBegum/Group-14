@@ -50,7 +50,7 @@ def select_function(function_number, x):
     # f = (x - 9) + (pow(x,2) - 1) + (x + 1)
         f=pow((x-3),2)*(x+1)-2
     else:
-        f = (x - 1)*pow((x+2),2)*pow((x - 2),2)-1
+        f = (x - 1)*pow((x+2),3)*pow((x - 2),2)-1
     
     return f
 
