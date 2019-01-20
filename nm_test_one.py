@@ -9,14 +9,16 @@ import numpy as np
 import pandas as pd
 import time
 
+
 def print_function():
     
     # Print all the function in the screen
 
     print("1. x*x-2")
     print("2. x*x*x-2")
-    print("3. (x-3)*(x-3)*(x+1)-2")
-    print("4. (x-1)*(x+2)*(x+2)*(x+2)*(x-2)*(x-2)-1")
+    print("3. (x-9)*(x*x-1)*(x+1)+6")
+    print("4. (x - 1)*pow((x+2),2)*pow((x - 2),2)-1")
+
 
 def intialization_method():
     
@@ -40,14 +42,15 @@ def select_function(function_number, x):
         """
 
     if function_number == 1:
-        f = x * x - 2
+        f = pow(x,2) - 2
     elif function_number == 2:
     #f = x * x * x * x + x * x * x     #X^4-2 and x^4-12 ;X^4+X^3
-        f = x * x * x - 2
+        f=pow(x,3)-2
     elif function_number == 3:
-        f = (x - 3) * (x - 3) * (x + 1) - 2
+    # f = (x - 9) + (pow(x,2) - 1) + (x + 1)
+        f=pow((x-3),2)*(x+1)-2
     else:
-        f = (x - 1) * (x + 2) * (x + 2) * (x + 2) * (x - 2) * (x - 2) - 1
+        f = (x - 1)*pow((x+2),2)*pow((x - 2),2)-1
     
     return f
 
@@ -56,15 +59,13 @@ def get_label(function_number):
     # use to display label in the graph
     
     if function_number == 1:
-        return "x * x - 2"
+        return "x^2-2"
     elif function_number == 2:
-        return "x*x*x-2"
+        return "x^3-2"
     elif function_number == 3:
-        return "(x-3)*(x-3)*(x+1)-2"
+        return "(x-9)*(x*x-1)*(x+1)+6"
     else:
-        return "(x-1)*(x+2)*(x+2)*(x+2)*(x-2)*(x-2)-1"
- 
-    return f
+        return "(x - 1)*pow((x+2),2)*pow((x - 2),2)-1"
 
 def make_interval(bnd1, bnd2):
     
@@ -186,9 +187,9 @@ def get_estimator_sign_second(f, x, step_initial,k):
     fd1=FloatDPApproximation(dfx[(1,)])
     fd2=2*FloatDPApproximation(dfx[(2,)])
     sq=sqrt(abs((fd1*fd1)-(2*fd2*fx)))
-    #print("sq:=",sq)
+    print("sq:=",sq)
     h=(sq-fd1)/fd2
-    #print("h:=",h)
+    print("h:=",h)
     xp=x
     step = step_initial
     for j in range(1,10):
@@ -198,7 +199,7 @@ def get_estimator_sign_second(f, x, step_initial,k):
         k_step = k_step * 2         # make the k double in each iteration
         fx_new = f(x_new)
         sign2 = decide(fx_new > 0) and 1 or -1
-        #print("sign1 sign2:=",)
+        print("x x_new sign1 sign2:=",x,x_new,sign1,sign2)
         if not (sign1 == sign2):
             return xp,x_new, step
         else:
@@ -224,9 +225,9 @@ def get_estimator_sign_second_con(f,x, step_initial,k):
     fd1=FloatDPApproximation(dfx[(1,)])
     fd2=2*FloatDPApproximation(dfx[(2,)])
     sq=sqrt(abs((fd1*fd1)-(2*fd2*fx)))
-    #print("sq in con :=",sq)
+    print("sq in con :=",sq)
     h=(sq-fd1)/fd2
-    #print("h:=",h)
+    print("h:=",h)
 
     xp=x
     step = step_initial
@@ -234,10 +235,11 @@ def get_estimator_sign_second_con(f,x, step_initial,k):
         step = step + 1
         x_new = x + k_step * h
         k_step = k_step * 2         # make the k double in each iteration
-        fx_new = f(make_interval(xp, x_new))
-        sign2 = decide(fx_new > 0) and 1 or -1
-        if not (sign1 == sign2):
-            return xp,x_new, step
+        fr = f(make_interval(xp, x_new))
+        print("x xp xnew :=",x,xp,x_new)
+        print("fxrange k",make_interval(xp, x_new),fr,k)
+        if not (definitely((fr) >= 0) | definitely((fr) <= 0)):
+            return xp, x_new, step
         else:
             xp=x_new
 
@@ -291,7 +293,7 @@ def get_estimator_sign(f, x, step,k):
         else:
             xp=x_new
 
-                #print("limit need to Increase")
+#print("limit need to Increase")
     return x,x,-1
 
 def askbool(message):
@@ -526,7 +528,6 @@ if __name__ == '__main__':
            
            
         N=len(k_list)
-        rounded_k = [round(elem, 2) for elem in k_list]
         ind=np.arange(N)
         width=0.12
             #r1=plt.bar(ind,mean_step_ge_time,width,color='r')
@@ -534,12 +535,12 @@ if __name__ == '__main__':
         r3=plt.bar(ind+width*2,initialestimator_nm_con_one_list,width,color='b')
         r4=plt.bar(ind+width*3,second_nm_one_list,width,color='c')
         r5=plt.bar(ind+width*4,second_nm_con_one_list,width,color='pink')
-        plt.xticks([r+width*2 for r in range(N)],rounded_k)
+        plt.xticks([r+width*2 for r in range(N)],k_list)
         titlelabels = "Function: {}".format(get_label(function_number))
         plt.title(titlelabels)
         plt.ylabel("Number of succesful one-steps in 100 attempts",fontsize=18)
         plt.xlabel("k",fontsize=18)
-        plt.legend((r2[0],r3[0],r4[0],r5[0]),('NM_IE_SIGN','NM_IE_CON','NM_IE_SIGN_TAYLOR','NM_IE_CON_TAYLOR')) 
+        plt.legend((r2[0],r3[0],r4[0],r5[0]),('NM_IE_SIGN','NM_IE_CON','NM_IE_SIGN_TAYLOR','NM_IE_CON_TAYLOR'))
         plt.show()
 
     else:
