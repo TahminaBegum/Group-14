@@ -14,10 +14,10 @@ def print_function():
     
     # Print all the function in the screen
 
-    print("1. pow(x,2)-2")
-    print("2. pow(x,3)-2")
-    print("3. pow((x-3),2)*(x+1)-2")
-    print("4. (x - 1)*pow((x+2),2)*pow((x - 2),2)-1")
+    print("1. x*x-2")
+    print("2. x*x*x-2")
+    print("3. (x-3)*(x-3)*(x+1)-2")
+    print("4. (x-1)*(x+2)*(x+2)*(x+2)*(x-2)*(x-2)-1")
 
 
 def intialization_method():
@@ -50,7 +50,7 @@ def select_function(function_number, x):
     # f = (x - 9) + (pow(x,2) - 1) + (x + 1)
         f=pow((x-3),2)*(x+1)-2
     else:
-        f = (x - 1)*pow((x+2),2)*pow((x - 2),2)-1
+        f = (x - 1)*pow((x+2),3)*pow((x - 2),2)-1
 
     return f
 
@@ -59,13 +59,13 @@ def get_label(function_number):
     # use to display label in the graph
     
     if function_number == 1:
-        return "x*x-2"
+        return "x * x - 2"
     elif function_number == 2:
         return "x*x*x-2"
     elif function_number == 3:
-        return "pow((x-3),2)*(x+1)-2"
+        return "(x-3)*(x-3)*(x+1)-2"
     else:
-        return "(x - 1)*pow((x+2),2)*pow((x - 2),2)-1"
+        return "(x-1)*(x+2)*(x+2)*(x+2)*(x-2)*(x-2)-1"
 
 def make_interval(bnd1, bnd2):
     
