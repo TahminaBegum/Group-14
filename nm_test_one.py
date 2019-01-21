@@ -14,10 +14,10 @@ def print_function():
     
     # Print all the function in the screen
 
-    print("1. x*x-2")
-    print("2. x*x*x-2")
-    print("3. (x-3)*(x-3)*(x+1)-2")
-    print("4. (x-1)*(x+2)*(x+2)*(x+2)*(x-2)*(x-2)-1")
+    print("1. x^2-2")
+    print("2. x^3-2")
+    print("3. (x-3)^2*(x+1)-2")
+    print("4. (x-1)*(x+2)^3*(x-2)^2-1")
 
 
 def intialization_method():
@@ -45,12 +45,11 @@ def select_function(function_number, x):
         f = pow(x,2) - 2
     elif function_number == 2:
     #f = x * x * x * x + x * x * x     #X^4-2 and x^4-12 ;X^4+X^3
-        f=pow(x,3)-2
+        f = pow(x,3) - 2
     elif function_number == 3:
-    # f = (x - 9) + (pow(x,2) - 1) + (x + 1)
-        f=pow((x-3),2)*(x+1)-2
+        f = pow((x - 3),2) * (x + 1) - 2
     else:
-        f = (x - 1)*pow((x+2),3)*pow((x - 2),2)-1
+        f = (x - 1) * pow((x + 2),3)  * pow((x - 2),2) - 1
     
     return f
 
@@ -59,13 +58,15 @@ def get_label(function_number):
     # use to display label in the graph
     
     if function_number == 1:
-        return "x * x - 2"
+        return "x ^2 - 2"
     elif function_number == 2:
-        return "x*x*x-2"
+        return "x^3-2"
     elif function_number == 3:
-        return "(x-3)*(x-3)*(x+1)-2"
+        return "(x-3)^2*(x+1)-2"
     else:
-        return "(x-1)*(x+2)*(x+2)*(x+2)*(x-2)*(x-2)-1"
+        return "(x-1)*(x+2)^3*(x-2)^2-1"
+ 
+    return f
 
 def make_interval(bnd1, bnd2):
     
@@ -538,10 +539,10 @@ if __name__ == '__main__':
         r5=plt.bar(ind+width*4,second_nm_con_one_list,width,color='pink')
         plt.xticks([r+width*2 for r in range(N)],rounded_k)
         titlelabels = "Function: {}".format(get_label(function_number))
-        plt.title(titlelabels)
+        plt.title(titlelabels,fontsize=20)
         plt.ylabel("Number of succesful one-steps in 100 attempts",fontsize=18)
         plt.xlabel("k",fontsize=18)
-        plt.legend((r2[0],r3[0],r4[0],r5[0]),('NM_IE_SIGN','NM_IE_CON','NM_IE_SIGN_TAYLOR','NM_IE_CON_TAYLOR')) 
+        plt.legend((r2[0],r3[0],r4[0],r5[0]),('Sign-NM','Con-NM','Sign-T','Con-T'),fontsize=18) 
         plt.show()
 
     else:
