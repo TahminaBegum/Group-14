@@ -61,14 +61,15 @@ def get_label(function_number):
     # use to display label in the graph
     
     if function_number == 1:
-        return "x*x-2"
+        return "x ^2 - 2"
     elif function_number == 2:
-        return "x*x*x-2"
+        return "x^3-2"
     elif function_number == 3:
-    #return "(x-9)*(x*x-1)*(x+1)+6"
-        return "pow((x-3),2)*(x+1)-2"
+        return "(x-3)^2*(x+1)-2"
     else:
-        return "f=(x-1)*pow((x+2),3)*pow((x-2),2)-1"
+        return "(x-1)*(x+2)^3*(x-2)^2-1"
+    
+    return f
 
 def make_interval(bnd1, bnd2):
     
@@ -192,13 +193,15 @@ def get_estimator_sign_second(f, x, step_initial,k):
     fx = FloatDPApproximation(dfx[(0,)])
     sign1 = decide(fx > 0) and 1 or -1
     sign =  decide(fd1 > 0) and 1 or -1
-    sq=sqrt(abs(pow(fd1,2)-(2*fd2*fx)))
-    h=(sq-fd1)/fd2
+    sq= sqrt(abs(pow(fd1,2)-(2*fd2*fx)))
+    h=(-fd1+sign*sq)/fd2
+    print("h:=",h)
     xp=x
     step = step_initial
     for j in range(1,100):
         step = step + 1
-        x_new = x + sign*k_step * h
+        x_new = x + k_step * h
+        print("x_new",x_new)
         k_step = k_step * 2         # make the k double in each iteration
         fx_new = f(x_new)
         sign2 = decide(fx_new > 0) and 1 or -1
@@ -206,6 +209,7 @@ def get_estimator_sign_second(f, x, step_initial,k):
         if not (sign1 == sign2):
             return xp,x_new, step
         else:
+            print("sign1 sign2:=", sign1, sign2)
             xp=x_new
 
     print("limit need to Increase ts2",x)
@@ -227,13 +231,13 @@ def get_estimator_sign_second_con(f,x, step_initial,k):
     fd2=2*FloatDPApproximation(dfx[(2,)])
     fx = FloatDPApproximation(dfx[(0,)])
     sign = decide(fd1 > 0) and 1 or -1
-    sq=sqrt(abs(pow(fd1,2)-(2*fd2*fx)))
-    h=(sq-fd1)/fd2
+    sq= sqrt(abs(pow(fd1,2)-(2*fd2*fx)))
+    h=(-fd1+sign*sq)/fd2
     xp=x
     step = step_initial
     for j in range(1,100):
         step = step + 1
-        x_new = x + sign*k_step * h  #change
+        x_new = x + k_step * h  #change
         k_step = k_step * 2         # make the k double in each iteration
         fr = f(make_interval(xp, x_new))
         print("x xp xnew fr sign",x,xp,x_new,fr,sign)
@@ -474,34 +478,29 @@ if __name__ == '__main__':
                             second_nm_con.append(10000)
 
 #titlelabels = "Function: {}  k={}".format(get_label(function_number), k)
-        titlelabels = "Function: {}  k={}".format(f, k)
-        plt.title(titlelabels)
+        titlelabels = "Function: {}  k={}".format(get_label(function_number), k)
+        plt.title(titlelabels,fontsize=20)
         plt.ylabel("Number of Steps",fontsize=20)
         plt.xlabel("Approximation Input",fontsize=20)
 
         if not (len(generel_nm) == 0):
             plt.plot(input_range, generel_nm, label='General_NM')
             bar_list.append(mean(generel_nm))
-            bars_name.append('General_NM')
         if not (len(initialestimator_nm) == 0):
-            plt.plot(input_range,initialestimator_nm,label='NM_IE')
+            plt.plot(input_range,initialestimator_nm,label='Sign-NM')
             bar_list.append(mean(initialestimator_nm))
-            bars_name.append('NM_IE')
         if not (len(initialestimator_nm_con) == 0):
-            plt.plot(input_range, initialestimator_nm_con,'r:',label='NM_IE_CON')
+            plt.plot(input_range, initialestimator_nm_con,'r:',label='CON-NM')
             bar_list.append(mean(initialestimator_nm_con))
-            bars_name.append('NM_IE_CON')
         if not (len(second_nm) == 0):
-            plt.plot(input_range, second_nm, label='sign+second')
+            plt.plot(input_range, second_nm, label='Sign-T')
             bar_list.append(mean(second_nm))
-            bars_name.append('sign+second')
         if not (len(second_nm_con) == 0):
-            plt.plot(input_range,second_nm_con,'c^:',label='CON+second')
+            plt.plot(input_range,second_nm_con,'c:',label='Con-T')
             bar_list.append(mean(second_nm_con))
-            bars_name.append('CON+second')
         x1,x2,y1,y2 = plt.axis()
 #plt.axis((x1,x2,10000-5,10000+5)) # test3
-        plt.axis((x1,x2,0,100))
+        plt.axis((x1,x2,0,10))
         plt.legend()
         plt.show()
 
