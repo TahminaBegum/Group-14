@@ -13,10 +13,10 @@ def print_function():
     
     # Print all the function in the screen
 
-    print("1. x*x-2")
-    print("2. x*x*x-2")
-    print("3. (x-3)*(x-3)*(x+1)-2")
-    print("4. (x-1)*(x+2)*(x+2)*(x+2)*(x-2)*(x-2)-1")
+    print("1. x^2-2")
+    print("2. x^3-2")
+    print("3. (x-3)^2*(x+1)-2")
+    print("4. (x-1)*(x+2)^3*(x-2)^2-1")
 
 def intialization_method():
     
@@ -25,8 +25,8 @@ def intialization_method():
     print("1. General Newton Method")
     print("2. General Newton Method with Initial estimator by using sign")
     print("3. General Newton Method with Initial estimator by using contractor")
-    print("4. General Newton Method with Initial estimator by using sign method and second derivatives")
-    print("5. General Newton Method with Initial estimator by using contractor method and second derivatives")
+    print("4. General Newton Method with Initial estimator by using sign method and second derivatives(T)")
+    print("5. General Newton Method with Initial estimator by using contractor method and second derivatives(T)")
 
 
 def select_function(function_number, x):
@@ -40,14 +40,14 @@ def select_function(function_number, x):
         """
 
     if function_number == 1:
-        f = x * x - 2
+        f = pow(x,2) - 2
     elif function_number == 2:
     #f = x * x * x * x + x * x * x     #X^4-2 and x^4-12 ;X^4+X^3
-        f = x * x * x - 2
+        f = pow(x,3) - 2
     elif function_number == 3:
-        f = (x - 3) * (x - 3) * (x + 1) - 2
+        f = pow((x - 3),2) * (x + 1) - 2
     else:
-        f = (x - 1) * (x + 2) * (x + 2) * (x + 2) * (x - 2) * (x - 2) - 1
+        f = (x - 1) * pow((x + 2),3)  * pow((x - 2),2) - 1
     
     return f
 
@@ -56,13 +56,13 @@ def get_label(function_number):
     # use to display label in the graph
     
     if function_number == 1:
-        return "x * x - 2"
+        return "x ^2 - 2"
     elif function_number == 2:
-        return "x*x*x-2"
+        return "x^3-2"
     elif function_number == 3:
-        return "(x-3)*(x-3)*(x+1)-2"
+        return "(x-3)^2*(x+1)-2"
     else:
-        return "(x-1)*(x+2)*(x+2)*(x+2)*(x-2)*(x-2)-1"
+        return "(x-1)*(x+2)^3*(x-2)^2-1"
  
     return f
 
@@ -200,10 +200,10 @@ def get_estimator_sign_second(f, x, step_initial,k):
     #print("h:=",h)
     xp=x
     step = step_initial
-    for j in range(1,10):
+    for j in range(1,100):
         #print("j",j)
         step = step + 1
-        x_new = x - k_step * h
+        x_new = x + k_step * h
         k_step = k_step * 2         # make the k double in each iteration
         fx_new = f(x_new)
         sign2 = decide(fx_new > 0) and 1 or -1
@@ -242,14 +242,13 @@ def get_estimator_sign_second_con(f,x, step_initial,k):
 #print("h:=",h)
     xp=x
     step = step_initial
-    for j in range(1,10):
+    for j in range(1,100):
         step = step + 1
-        x_new = x - k_step * h
+        x_new = x + k_step * h
         k_step = k_step * 2         # make the k double in each iteration
-        fx_new = f(make_interval(xp, x_new))
-        sign2 = decide(fx_new > 0) and 1 or -1
-        if not (sign1 == sign2):
-            return xp,x_new, step
+        fr = f(make_interval(xp, x_new))
+        if not (definitely((fr) >= 0) | definitely((fr) <= 0)):
+            return xp, x_new, step
         else:
             xp=x_new
 
@@ -484,7 +483,7 @@ if __name__ == '__main__':
                             second_nm_con.append(10000)
 
         titlelabels = "Function: {}  k={}".format(get_label(function_number), k)
-        plt.title(titlelabels)
+        plt.title(titlelabels,fontsize=20)
         plt.ylabel("Number of Steps",fontsize=20)
         plt.xlabel("Approximation Input",fontsize=20)
 
@@ -493,49 +492,49 @@ if __name__ == '__main__':
             bar_list.append(mean(generel_nm))
             bars_name.append('General_NM')
         if not (len(initialestimator_nm) == 0):
-            plt.plot(input_range,initialestimator_nm,label='NM_IE_SIGN')
+            plt.plot(input_range,initialestimator_nm,label='Sign-NM')
             bar_list.append(mean(initialestimator_nm))
-            bars_name.append('NM_IE_SIGN')
+            bars_name.append('Sign-NM')
         if not (len(initialestimator_nm_con) == 0):
-            plt.plot(input_range, initialestimator_nm_con,'r:',label='NM_IE_CON')
+            plt.plot(input_range, initialestimator_nm_con,'r:',label='Con-NM')
             bar_list.append(mean(initialestimator_nm_con))
-            bars_name.append('NM_IE_CON')
+            bars_name.append('Con-NM')
         if not (len(second_nm) == 0):
-            plt.plot(input_range, second_nm, label='NM_IE_SIGN_TAYLOR')
+            plt.plot(input_range, second_nm, label='Sign-T')
             bar_list.append(mean(second_nm))
-            bars_name.append('NM_IE_SIGN_TAYLOR')
+            bars_name.append('Sign-T')
         if not (len(second_nm_con) == 0):
-            plt.plot(input_range,second_nm_con,'c:',label='NM_IE_CON_TAYLOR')
+            plt.plot(input_range,second_nm_con,'c:',label='Con-T')
             bar_list.append(mean(second_nm_con))
-            bars_name.append('NM_IE_CON_TAYLOR')
+            bars_name.append('Con-T')
         x1,x2,y1,y2 = plt.axis()
         plt.axis((x1,x2,0,20))
-        plt.legend()
+        plt.legend(fontsize=18)
         plt.show()
 
 
         titlelabels = "Function: {}  k={}".format(get_label(function_number), k)
-        plt.title(titlelabels)
+        plt.title(titlelabels,fontsize=20)
         plt.ylabel("Time(nanosecond)",fontsize=20)
         plt.xlabel("Approximation Input",fontsize=20)
         if not (len(generel_nm_time) == 0):
             plt.plot(input_range, generel_nm_time, label='General_NM')
             bar_list_time.append(mean(generel_nm_time))
         if not (len(initialestimator_nm_time) == 0):
-            plt.plot(input_range, initialestimator_nm_time, label='NM_IE_SIGN')
+            plt.plot(input_range, initialestimator_nm_time, label='Sign-NM')
             bar_list_time.append(mean(initialestimator_nm_time))
         if not (len(initialestimator_nm_con_time) == 0):
-            plt.plot(input_range, initialestimator_nm_con_time, label='NM_IE_CON')
+            plt.plot(input_range, initialestimator_nm_con_time, label='Con-NM')
             bar_list_time.append(mean(initialestimator_nm_con_time))
         if not (len(second_nm_time) == 0):
-            plt.plot(input_range, second_nm_time, label='NM_IE_SIGN_TAYLOR')
+            plt.plot(input_range, second_nm_time, label='Sign-T')
             bar_list_time.append(mean(second_nm_time))
         if not (len(second_nm_con_time) == 0):
-            plt.plot(input_range, second_nm_con_time, label='NM_IE_CON_TAYLOR')
+            plt.plot(input_range, second_nm_con_time, label='Con-T')
             bar_list_time.append(mean(second_nm_con_time))
         x1,x2,y1,y2 = plt.axis()
         plt.axis((x1,x2,0,0.1))
-        plt.legend()
+        plt.legend(fontsize=18)
         plt.show()
 
         #print(bar_list)
