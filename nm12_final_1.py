@@ -80,13 +80,13 @@ def make_interval(bnd1, bnd2):
         x          -- single value with interval [bnd1, bnd2] or [bnd2, bnd1]
         """
     
-    bnd1 = str(bnd1)
-    bnd2 = str(bnd2)
+    #bnd1 = str(bnd1)
+    #bnd2 = str(bnd2)
     dpr=DoublePrecision()
     if bnd1 < bnd2:
-        x=FloatDPBounds(Decimal(bnd1),Decimal(bnd2),dpr)
+        x=FloatDPBounds(Decimal(str(bnd1)),Decimal(str(bnd2)),dpr)
     else:
-        x=FloatDPBounds(Decimal(bnd2),Decimal(bnd1),dpr)
+        x=FloatDPBounds(Decimal(str(bnd2)),Decimal(str(bnd1)),dpr)
     
     #print("interval: ",x)
     return x
@@ -240,6 +240,7 @@ def get_estimator_sign_second_con(f,x, step_initial,k):
         x_new = x + k_step * h
         k_step = k_step * 2         # make the k double in each iteration
         fr = f(make_interval(xp, x_new))
+        #print("interval",make_interval(xp, x_new)#)
         print("x xp xnew fr sign",x,xp,x_new,fr,sign)
         if not (definitely((fr) >= 0) | definitely((fr) <= 0)):
             return xp, x_new, step
@@ -500,11 +501,11 @@ if __name__ == '__main__':
             bar_list.append(mean(second_nm))
             bars_name.append('sign+second')
         if not (len(second_nm_con) == 0):
-            plt.plot(input_range,second_nm_con,'c^:',label='CON+second')
+            plt.plot(input_range,second_nm_con,'c:',label='CON+second')
             bar_list.append(mean(second_nm_con))
             bars_name.append('CON+second')
         x1,x2,y1,y2 = plt.axis()
-        plt.axis((x1,x2,10000-5,10000+5))
+        plt.axis((x1,x2,0,10))
 #plt.axis((x1,x2,0,100))
         plt.legend()
         plt.show()
