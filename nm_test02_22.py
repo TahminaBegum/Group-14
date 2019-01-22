@@ -77,15 +77,13 @@ def make_interval(bnd1, bnd2):
         x          -- single value with interval [bnd1, bnd2] or [bnd2, bnd1]
         """
     
-    bnd1 = str(bnd1)
-    bnd2 = str(bnd2)
     dpr=DoublePrecision()
     if bnd1 < bnd2:
-        x=FloatDPBounds(Decimal(bnd1),Decimal(bnd2),dpr)
+        
+        x=FloatDPBounds(Decimal(str(bnd1)),Decimal(str(bnd2)),dpr)
     else:
-        x=FloatDPBounds(Decimal(bnd2),Decimal(bnd1),dpr)
+        x=FloatDPBounds(Decimal(str(bnd2)),Decimal(str(bnd1)),dpr)
     
-    #print("interval: ",x)
     return x
 
 def get_estimator_contractor(f, x, step, k1):
@@ -182,31 +180,31 @@ def get_estimator_sign_second(f, x, step_initial,k):
     if decide(dfx[(2,)]==0):
         print("Zero derivative. No solution found in IE(second derivative)sign method.For x=",x)
         return x,x,0
+    
     fd1=FloatDPApproximation(dfx[(1,)])
     fd2=2*FloatDPApproximation(dfx[(2,)])
     fx = FloatDPApproximation(dfx[(0,)])
     sign1 = decide(fx > 0) and 1 or -1
-    sign = decide(fd1 > 0) and 1 or -1
-    sq=sqrt(abs(pow(fd1,2)-(2*fd2*fx)))
-    #print("sq:=",sq)
-    h=(sq-fd1)/fd2
-    #print("h:=",h)
+    r=pow(fd1,2)-(2*fd2*fx)
+    singr=decide((r) > 0) and 1 or -1
+    sq=sqrt(abs(r))
+    h=(-fd1+singr*sq)/fd2
     xp=x
+    #print("dfx x sign kstep h sq:=",dfx,x,sign,k_step,h,sq)
     step = step_initial
     for j in range(1,100):
-        #print("j",j)
         step = step + 1
-        x_new = x + sign*h * k_step
+        x_new = x + k_step * h
         k_step = k_step * 2         # make the k double in each iteration
         fx_new = f(x_new)
         sign2 = decide(fx_new > 0) and 1 or -1
-        print("x x_new sign1 sign2:=",x,x_new,sign1,sign2)
+        print("x xp xnew",x,xp,x_new)
         if not (sign1 == sign2):
             return xp,x_new, step
         else:
             xp=x_new
 
-#print("limit need to Increase")
+    print("limit need to Increase ts2",x)
     return x,x,-1
 
 
@@ -220,32 +218,31 @@ def get_estimator_sign_second_con(f,x, step_initial,k):
     if decide(dfx[(2,)]==0):
         print("Zero derivative. No solution found in IE(second derivative)contractor method.For x=",x)
         return x,x,0
-    sign = decide(dfx[(1,)] > 0) and 1 or -1
+    
     fd1=FloatDPApproximation(dfx[(1,)])
     fd2=2*FloatDPApproximation(dfx[(2,)])
-    fx=FloatDPApproximation(dfx[(0,)])
-    sq=sqrt(abs(pow(fd1,2)-(2*fd2*fx)))
-    #print("fd1 fd2 con :=",fd1,fd2)
-    #print("fx dfx:=",fx,dfx)
-    h=(sq-fd1)/fd2
-    #print("sign:=",sign)
-    
+    fx = FloatDPApproximation(dfx[(0,)])
+    #sign = decide((fx/fd1) > 0) and 1 or -1
+    r=pow(fd1,2)-(2*fd2*fx)
+    singr=decide((r) > 0) and 1 or -1
+    sq=sqrt(abs(r))
+    h=(-fd1+singr*sq)/fd2
     xp=x
     step = step_initial
-    for j in range(1,100):
+    for j in range(1,10):
         step = step + 1
-        x_new = x + sign*k_step * h
+        x_new = x + k_step * h
         k_step = k_step * 2         # make the k double in each iteration
         fr = f(make_interval(xp, x_new))
-        #print("x xp xnew :=",x,xp,x_new)
-        #print("fxrange k",make_interval(xp, x_new),fr,k)
+        print("x xp xnew fr",x,xp,x_new,fr)
         if not (definitely((fr) >= 0) | definitely((fr) <= 0)):
             return xp, x_new, step
         else:
             xp=x_new
 
-#print("limit need to Increase")
+    print("limit need to Increase tc2",x)
     return x,x,-1
+
 
 
 
