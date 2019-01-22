@@ -191,19 +191,20 @@ def get_estimator_sign_second(f, x, step_initial,k):
     fd2=2*FloatDPApproximation(dfx[(2,)])
     fx = FloatDPApproximation(dfx[(0,)])
     sign1 = decide(fx > 0) and 1 or -1
-    sign =  decide((fx/fd1) > 0) and 1 or -1
-    #sign=decide(fd1 > 0) and 1 or -1
-    sq=sqrt(abs(pow(fd1,2)-(2*fd2*fx)))
-    h=sign*abs((sq-fd1)/fd2)
+    r=pow(fd1,2)-(2*fd2*fx)
+    singr=decide((r) > 0) and 1 or -1
+    sq=sqrt(abs(r))
+    h=(-fd1+singr*sq)/fd2
     xp=x
+    #print("dfx x sign kstep h sq:=",dfx,x,sign,k_step,h,sq)
     step = step_initial
     for j in range(1,100):
         step = step + 1
-        x_new = x - k_step * h
+        x_new = x + k_step * h
         k_step = k_step * 2         # make the k double in each iteration
         fx_new = f(x_new)
         sign2 = decide(fx_new > 0) and 1 or -1
-        print("x xp xnew sign1 sign2",x,xp,x_new,sign1,sign2)
+        print("x xp xnew",x,xp,x_new)
         if not (sign1 == sign2):
             return xp,x_new, step
         else:
@@ -228,13 +229,15 @@ def get_estimator_sign_second_con(f,x, step_initial,k):
     fd2=2*FloatDPApproximation(dfx[(2,)])
     fx = FloatDPApproximation(dfx[(0,)])
     sign = decide((fx/fd1) > 0) and 1 or -1
-    sq=sqrt(abs(pow(fd1,2)-(2*fd2*fx)))
-    h=abs((sq+fd1)/fd2)
+    r=pow(fd1,2)-(2*fd2*fx)
+    singr=decide((r) > 0) and 1 or -1
+    sq=sqrt(abs(r))
+    h=(-fd1+singr*sq)/fd2
     xp=x
     step = step_initial
     for j in range(1,100):
         step = step + 1
-        x_new = x - sign*k_step * h  #change
+        x_new = x + k_step * h
         k_step = k_step * 2         # make the k double in each iteration
         fr = f(make_interval(xp, x_new))
         print("x xp xnew fr sign",x,xp,x_new,fr,sign)
